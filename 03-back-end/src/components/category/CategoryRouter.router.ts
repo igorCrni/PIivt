@@ -17,6 +17,7 @@ class CategoryRouter implements IRouter{
         application.post("/api/category",               categoryController.add.bind(categoryController));
         application.put("/api/category/:cid",           categoryController.edit.bind(categoryController));
         application.post("/api/category/:cid/brand",    categoryController.addBrand.bind(categoryController));
+        application.put("/api/category/:cid/brand/:bid", categoryController.editBrand.bind(categoryController));
     }
 }
 

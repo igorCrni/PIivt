@@ -4,6 +4,7 @@ import IAddCategory, { AddCategoryValidator } from './dto/IAddCategory.dto';
 import IAddBrand, { AddBrandValidator, IAddBrandDto } from '../brand/dto/IAddBrand.dto';
 import BrandService from '../brand/BrandService.service';
 import { EditCategoryValidator, IEditCategoryDto } from './dto/IEditCategory.dto';
+import IEditBrandDto, { EditBrandValidator } from '../brand/dto/IEditBrand.dto';
 
 class CategoryController {
     private categoryService: CategoryService;
@@ -119,6 +120,45 @@ class CategoryController {
             .catch(error => {
                 res.status(500).send(error?.message);
             });
+    }
+
+    async editBrand(req: Request, res: Response) {
+        const categoryId: number = +req.params?.cid;
+        const brandId: number = +req.params?.bid;
+        const data = req.body as IEditBrandDto;
+
+        if(!EditBrandValidator(data)) {
+            return res.status(400).send(EditBrandValidator.errors);
+        }
+
+        this.categoryService.getById(categoryId, {
+            loadBrands: false
+        })
+        .then(result =>{
+            if(result === null) {
+                return res.status(404).send('Category not found!');
+            }
+
+            this.brandService.getById(brandId, {})
+            .then(result =>{
+                if(result === null) {
+                    return res.status(404).send('Brand not found!');
+                }
+
+                if (result.categoryId !== categoryId) {
+                    return res.status(404).send('This brand does not belong to this category!');
+                }
+
+                this.brandService.editById(brandId, data)
+                .then(result =>{
+                    res.send(result);
+                })
+            });
+        })
+        .catch(error =>{
+            res.status(500).send(error?.message);
+        });
+
     }
 }
 

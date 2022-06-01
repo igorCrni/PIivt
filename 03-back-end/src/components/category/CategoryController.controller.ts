@@ -1,8 +1,9 @@
 import CategoryService, { DefaultCategoryAdapterOptions } from './CategoryService.service';
-import {Request, Response} from "express";
+import {Request, response, Response} from "express";
 import IAddCategory, { AddCategoryValidator } from './dto/IAddCategory.dto';
-import IAddBrand, { AddBrandValidator } from '../brand/dto/IAddBrand.dto';
+import IAddBrand, { AddBrandValidator, IAddBrandDto } from '../brand/dto/IAddBrand.dto';
 import BrandService from '../brand/BrandService.service';
+import { EditCategoryValidator, IEditCategoryDto } from './dto/IEditCategory.dto';
 
 class CategoryController {
     private categoryService: CategoryService;
@@ -58,15 +59,46 @@ class CategoryController {
         });
     }
 
+    async edit(req: Request, res: Response) {
+        const id: number = +req.params?.cid;
+        const data = req.body as IEditCategoryDto;
+
+        if (!EditCategoryValidator(data)) {
+            return res.status(400).send(EditCategoryValidator.errors);
+        }
+
+        this.categoryService.getById(id, {
+            loadBrands: false
+        })
+            .then(result => {
+                if (result === null) {
+                    return res.sendStatus(404);
+                }
+
+               this.categoryService.editById(id, {
+                   name: data.name
+               })
+               .then(result =>{
+                    res.send(result);
+               })
+               .catch(error =>{
+                   res.status(400).send(error?.message);
+               })
+            })
+            .catch(error => {
+                res.status(500).send(error?.message);
+            });
+    }
+
     async addBrand(req: Request, res: Response) {
-        const categoryid: number = +req.params?.cid;
-        const data = req.body as IAddBrand;
+        const categoryId: number = +req.params?.cid;
+        const data = req.body as IAddBrandDto;
 
         if(!AddBrandValidator(data)) {
             return res.status(400).send(AddBrandValidator.errors);
         }
 
-        this.categoryService.getById(categoryid, {loadBrands: false })
+        this.categoryService.getById(categoryId, {loadBrands: false })
             .then(result => {
                 if (result === null) {
                     return res.sendStatus(404);
@@ -74,7 +106,7 @@ class CategoryController {
 
                 this.brandService.add({
                     name: data.name,
-                    categoryId: categoryid
+                    category_id: categoryId
                 })
                 .then(result =>{
                     res.send(result);

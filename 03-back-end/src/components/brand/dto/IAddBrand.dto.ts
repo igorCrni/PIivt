@@ -1,9 +1,15 @@
 import Ajv from "ajv";
+import IServiceData from "../../../common/IServiceData.interface";
 
 const ajv = new Ajv();
 
-export default interface IAddBrand {
+export interface IAddBrandDto {
     name: string;
+}
+
+export default interface IAddBrand extends IServiceData{
+    name: string;
+    category_id: number;
 }
 
 const AddBrandSchema = {

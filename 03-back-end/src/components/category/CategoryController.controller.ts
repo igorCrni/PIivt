@@ -1,22 +1,15 @@
-import CategoryService, { DefaultCategoryAdapterOptions } from './CategoryService.service';
+import { DefaultCategoryAdapterOptions } from './CategoryService.service';
 import {Request, response, Response} from "express";
 import IAddCategory, { AddCategoryValidator } from './dto/IAddCategory.dto';
-import IAddBrand, { AddBrandValidator, IAddBrandDto } from '../brand/dto/IAddBrand.dto';
-import BrandService from '../brand/BrandService.service';
+import { AddBrandValidator, IAddBrandDto } from '../brand/dto/IAddBrand.dto';
 import { EditCategoryValidator, IEditCategoryDto } from './dto/IEditCategory.dto';
 import IEditBrandDto, { EditBrandValidator } from '../brand/dto/IEditBrand.dto';
+import BaseController from '../../common/BaseController';
 
-class CategoryController {
-    private categoryService: CategoryService;
-    private brandService: BrandService;
-
-    constructor(categoryService: CategoryService, brandService: BrandService) {
-        this.categoryService = categoryService;
-        this.brandService = brandService;
-    }
-
+class CategoryController extends BaseController {
+    
     async getAll(req: Request, res: Response) {
-        this.categoryService.getAll(DefaultCategoryAdapterOptions)
+        this.services.category.getAll(DefaultCategoryAdapterOptions)
         .then(result =>{
             res.send(result);
         })
@@ -28,7 +21,7 @@ class CategoryController {
     async getById(req: Request, res: Response) {
         const id: number = +req.params?.id;
 
-        this.categoryService.getById(id, {
+        this.services.category.getById(id, {
             loadBrands: true
         })
             .then(result => {
@@ -51,7 +44,7 @@ class CategoryController {
             return res.status(400).send(AddCategoryValidator.errors);
         }
 
-        this.categoryService.add(data)
+        this.services.category.add(data)
         .then(result =>{
             res.send(result);
         })
@@ -68,7 +61,7 @@ class CategoryController {
             return res.status(400).send(EditCategoryValidator.errors);
         }
 
-        this.categoryService.getById(id, {
+        this.services.category.getById(id, {
             loadBrands: false
         })
             .then(result => {
@@ -76,7 +69,7 @@ class CategoryController {
                     return res.sendStatus(404);
                 }
 
-               this.categoryService.editById(id, {
+               this.services.category.editById(id, {
                    name: data.name
                })
                .then(result =>{
@@ -99,13 +92,13 @@ class CategoryController {
             return res.status(400).send(AddBrandValidator.errors);
         }
 
-        this.categoryService.getById(categoryId, {loadBrands: false })
+        this.services.category.getById(categoryId, {loadBrands: false })
             .then(result => {
                 if (result === null) {
                     return res.sendStatus(404);
                 }
 
-                this.brandService.add({
+                this.services.brand.add({
                     name: data.name,
                     category_id: categoryId
                 })
@@ -131,7 +124,7 @@ class CategoryController {
             return res.status(400).send(EditBrandValidator.errors);
         }
 
-        this.categoryService.getById(categoryId, {
+        this.services.category.getById(categoryId, {
             loadBrands: false
         })
         .then(result =>{
@@ -139,7 +132,7 @@ class CategoryController {
                 return res.status(404).send('Category not found!');
             }
 
-            this.brandService.getById(brandId, {})
+            this.services.brand.getById(brandId, {})
             .then(result =>{
                 if(result === null) {
                     return res.status(404).send('Brand not found!');
@@ -149,7 +142,7 @@ class CategoryController {
                     return res.status(404).send('This brand does not belong to this category!');
                 }
 
-                this.brandService.editById(brandId, data)
+                this.services.brand.editById(brandId, data)
                 .then(result =>{
                     res.send(result);
                 })

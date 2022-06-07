@@ -3,16 +3,16 @@ import IServiceData from "../../../common/IServiceData.interface";
 
 const ajv = new Ajv();
 
-export interface IEditBrandDto {
+export interface IAddModelDto {
     name: string;
 }
 
-export default interface IEditBrand extends IServiceData{
+export default interface IAddModel extends IServiceData{
     name: string;
-    category_id: number;
+    brand_id: number;
 }
 
-const EditBrandSchema = {
+const AddModelSchema = {
     type: "object",
     properties: {
         name: {
@@ -27,6 +27,6 @@ const EditBrandSchema = {
     additionalProperties: false,
 };
 
-const EditBrandValidator = ajv.compile(EditBrandSchema);
+const AddModelValidator = ajv.compile(AddModelSchema);
 
-export{EditBrandValidator};
+export{AddModelValidator};

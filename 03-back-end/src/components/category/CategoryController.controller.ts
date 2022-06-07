@@ -5,6 +5,8 @@ import { AddBrandValidator, IAddBrandDto } from '../brand/dto/IAddBrand.dto';
 import { EditCategoryValidator, IEditCategoryDto } from './dto/IEditCategory.dto';
 import IEditBrandDto, { EditBrandValidator } from '../brand/dto/IEditBrand.dto';
 import BaseController from '../../common/BaseController';
+import { AddModelValidator } from '../model/dto/IAddModel.dto';
+import IEditModelDto from '../model/dto/IEditModel.dto';
 
 class CategoryController extends BaseController {
     
@@ -143,6 +145,76 @@ class CategoryController extends BaseController {
                 }
 
                 this.services.brand.editById(brandId, data)
+                .then(result =>{
+                    res.send(result);
+                })
+            });
+        })
+        .catch(error =>{
+            res.status(500).send(error?.message);
+        });
+
+    }
+
+    async addModel(req: Request, res: Response) {
+        const brandId: number = +req.params?.bid;
+        const data = req.body as IAddBrandDto;
+
+        if(!AddModelValidator(data)) {
+            return res.status(400).send(AddModelValidator.errors);
+        }
+
+        this.services.model.getById(brandId, {loadBrands: false })
+            .then(result => {
+                if (result === null) {
+                    return res.sendStatus(404);
+                }
+
+                this.services.model.add({
+                    name: data.name,
+                    brand_id: brandId
+                })
+                .then(result =>{
+                    res.send(result);
+                })
+                .catch(error => {
+                    res.status(400).send(error?.message);
+                });
+
+            })
+            .catch(error => {
+                res.status(500).send(error?.message);
+            });
+    }
+
+    async editModel(req: Request, res: Response) {
+        const brandId: number = +req.params?.bid;
+        const modelId: number = +req.params?.mid;
+        const data = req.body as IEditModelDto;
+
+        if(!EditBrandValidator(data)) {
+            return res.status(400).send(EditBrandValidator.errors);
+        }
+
+        this.services.model.getById(brandId, {
+            
+        })
+        .then(result =>{
+            if(result === null) {
+                return res.status(404).send('Brand not found!');
+            }
+
+            this.services.model.getById(modelId, {})
+            .then(result =>{
+                if(result === null) {
+                    return res.status(404).send('Model not found!');
+                }
+
+                if (result.brandId !== brandId) {
+                    return res.status(404).send('This model does not belong to this brand!');
+                }
+
+                this.services.model.editById(modelId, data)
                 .then(result =>{
                     res.send(result);
                 })

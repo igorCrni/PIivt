@@ -1,5 +1,13 @@
 import IRouter from "./IRouter.interface";
 
+export interface IMailConfiguration {
+    host: string,
+    port: number,
+    email: string,
+    password: string,
+    debug: boolean,
+}
+
 interface IConfig {
     server: {
         port: number;
@@ -29,6 +37,8 @@ interface IConfig {
         //supportBigNumbers: boolean,
     },
     routers: IRouter[],
+
+    mail: IMailConfiguration,
 }
 
 export default IConfig;

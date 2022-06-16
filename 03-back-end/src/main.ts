@@ -9,6 +9,7 @@ import * as mysql2 from 'mysql2/promise';
 import CategoryService from "./components/category/CategoryService.service";
 import BrandService from "./components/brand/BrandService.service";
 import ModelService from "./components/model/ModelService.service";
+import UserService from "./components/user/UserService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -35,6 +36,7 @@ const applicationResources: IApplicationResources = {
         category: new CategoryService(db),
         brand: new BrandService(db),
         model: new ModelService(db),
+        user: new UserService(db),
     }
 };
 

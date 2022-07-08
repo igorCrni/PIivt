@@ -51,6 +51,7 @@ export default class UserController extends BaseController {
 
         const passwordHash = bcrypt.hashSync(body.password, 10);
 
+        // this.services.user
         this.services.user.add({
             email: body.email,
             password_hash: passwordHash,

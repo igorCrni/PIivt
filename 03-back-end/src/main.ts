@@ -10,6 +10,8 @@ import CategoryService from "./components/category/CategoryService.service";
 import BrandService from "./components/brand/BrandService.service";
 import ModelService from "./components/model/ModelService.service";
 import UserService from "./components/user/UserService.service";
+import fileUpload = require("express-fileupload");
+import PhotoService from "./components/photo/PhotoService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -37,6 +39,7 @@ const applicationResources: IApplicationResources = {
         brand: new BrandService(db),
         model: new ModelService(db),
         user: new UserService(db),
+        photo: new PhotoService(db),
     }
 };
 
@@ -47,6 +50,23 @@ application.use(morgan(config.logging.foramt, {
 }));
 
 application.use(cors());
+
+application.use(express.urlencoded({extended: true,}));
+
+application.use(fileUpload({
+    limits: {
+        files: config.fileUploads.maxFiles,
+        fileSize: config.fileUploads.maxFileSize,
+    },
+    abortOnLimit: true,
+
+    useTempFiles: true,
+    tempFileDir: config.fileUploads.tempFileDirectory,
+    createParentPath: true,
+    safeFileNames: true,
+    preserveExtension: true,
+}));
+
 application.use(express.json());
 
 application.use(config.server.static.route, express.static("./static", {

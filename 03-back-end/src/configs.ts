@@ -1,6 +1,7 @@
 import IConfig from "./common/IConfig.interface";
 import CategoryRouter from "./components/category/CategoryRouter.router";
 import UserRouter from "./components/user/UserRouter.router";
+import fileUpload = require("express-fileupload");
 import { MailConfigurationparameters } from "./config.mail";
 
 const DevConfig: IConfig = {
@@ -42,7 +43,25 @@ const DevConfig: IConfig = {
         email: "",
         password: "",
         debug: true,
-    }
+    },
+    fileUploads: {
+        maxFiles: 10,
+        maxFileSize: 5 * 1024 * 1024,
+        tempFileDirectory: "../temp/",
+        destinationDirectoryRoot: "uploads/",
+        photos: {
+            allowedTypes: ["png","jpg"],
+            allowedExtensions: [".png",".jpg"],
+            width: {
+                min:320,
+                max:1920,
+            },
+            height: {
+                min:240,
+                max:1080,
+            }
+        },
+    },
 };
 
 DevConfig.mail = MailConfigurationparameters;

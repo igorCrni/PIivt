@@ -39,6 +39,25 @@ interface IConfig {
     routers: IRouter[],
 
     mail: IMailConfiguration,
+
+    fileUploads: {
+        maxFiles: number,
+        maxFileSize: number,
+        tempFileDirectory: string,
+        destinationDirectoryRoot: string,
+        photos: {
+            allowedTypes: string[],
+            allowedExtensions: string[],
+            width: {
+                min:number,
+                max:number,
+            },
+            height: {
+                min:number,
+                max:number,
+            }
+        },
+    }
 }
 
 export default IConfig;

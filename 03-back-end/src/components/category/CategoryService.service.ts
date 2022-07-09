@@ -25,10 +25,7 @@ class CategoryService extends BaseService<CategoryModel, ICategoryAdapterOptions
         category.name = data?.name;
 
         if(options.loadBrands) {
-            const brandService: BrandService = new BrandService(this.db);
-
-            category.brand = await brandService.getAllByCategoryId(category.categoryId, {});
-
+            category.brand = await this.services.brand.getAllByCategoryId(category.categoryId, {});
         }
 
         return category;

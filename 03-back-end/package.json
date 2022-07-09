@@ -18,6 +18,7 @@
     "@types/morgan": "^1.9.3",
     "@types/node": "^17.0.35",
     "@types/nodemailer": "^6.4.4",
+    "@types/sharp": "^0.30.4",
     "@types/uuid": "^8.3.4",
     "rimraf": "^3.0.2",
     "ts-node-dev": "^1.1.8",
@@ -36,6 +37,7 @@
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
     "nodemailer": "^6.7.5",
+    "sharp": "^0.30.7",
     "uuid": "^8.3.2"
   }
 }

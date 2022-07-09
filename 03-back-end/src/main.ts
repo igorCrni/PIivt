@@ -35,13 +35,20 @@ const db = await mysql2.createConnection({
 const applicationResources: IApplicationResources = {
     databaseConnection: db,
     services: {
-        category: new CategoryService(db),
-        brand: new BrandService(db),
-        model: new ModelService(db),
-        user: new UserService(db),
-        photo: new PhotoService(db),
+        category: null,
+        brand: null,
+        model: null,
+        user: null,
+        photo: null,
     }
 };
+
+applicationResources.services.category = new CategoryService(applicationResources);
+applicationResources.services.brand = new BrandService(applicationResources);
+applicationResources.services.model = new ModelService(applicationResources);
+applicationResources.services.user = new UserService(applicationResources);
+applicationResources.services.photo = new PhotoService(applicationResources);
+
 
 const application: express.Application = express();
 

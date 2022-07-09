@@ -1,17 +1,36 @@
 import * as mysql2 from 'mysql2/promise';
 import IAdapterOptions from './IAdapterOptions.interface';
+import IApplicationResources, {IServices} from './IApplicationResources.inteface';
 import IModel from './IModel.inteface';
 import IServiceData from './IServiceData.interface';
 
 export default abstract class BaseService<ReturnModel extends IModel, AdapterOptions extends IAdapterOptions> {
     private database: mysql2.Connection;
+    private serviceInstances: IServices;
 
-    constructor(databaseConnection: mysql2.Connection) {
-        this.database = databaseConnection;
+    constructor(resources: IApplicationResources) {
+        this.database = resources.databaseConnection;
+        this.serviceInstances = resources.services;
     }
-
+    
     protected get db(): mysql2.Connection {
         return this.database;
+    }
+
+    protected get services(): IServices {
+        return this.serviceInstances;
+    }
+
+    public startTransaction() {
+        return this.database.beginTransaction();
+    }
+
+    public commitChanges() {
+        return this.database.commit();
+    }
+
+    public rollbackChanges() {
+        return this.database.rollback();
     }
 
     abstract tableName(): string;
@@ -169,6 +188,27 @@ export default abstract class BaseService<ReturnModel extends IModel, AdapterOpt
                 .catch(error => {
                     reject(error);
                 });
+        });
+    }
+    protected async baseDeleteById(id: number): Promise<true> {
+        const tableName = this.tableName();
+
+        return new Promise((resolve, reject) => {
+            const sql: string = "DELETE FROM `" + tableName + "` WHERE `" + tableName + "_id` = ?;";
+
+            this.db.execute(sql, [ id ])
+            .then(async result => {
+                const info: any = result;
+
+                if (info[0]?.affectedRows === 0) {
+                    return reject({ message: "Could not delete this items from the " + tableName + " table!", });
+                }
+
+                resolve(true);
+            })
+            .catch(error => {
+                reject(error);
+            });
         });
     }
 }

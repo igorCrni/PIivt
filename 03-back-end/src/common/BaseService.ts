@@ -95,7 +95,7 @@ export default abstract class BaseService<ReturnModel extends IModel, AdapterOpt
         );
     }
 
-    protected async getAllByFieldNameAnValue(fieldName: string, value: any, options: IAdapterOptions): Promise<ReturnModel []> {
+    protected async getAllByFieldNameAndValue(fieldName: string, value: any, options: IAdapterOptions): Promise<ReturnModel []> {
         const tableName = this.tableName();
         
         return new Promise<ReturnModel[]> (

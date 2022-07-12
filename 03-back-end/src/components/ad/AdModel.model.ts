@@ -9,6 +9,8 @@ class AdModel implements IModel {
     brandId: number;
     modelId: number;
     userId: number;
+    photoId:number;
+    carBodyId:number;
 }
 
 export default AdModel;

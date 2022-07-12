@@ -24,7 +24,7 @@ class ModelService extends BaseService<ModelModel, ModelAdapterOptions> {
     }
 
     public async getAllByBrandId(brandId: number , options: ModelAdapterOptions): Promise<ModelModel []> {
-        return this.getAllByFieldNameAnValue('brand_id', brandId, options);
+        return this.getAllByFieldNameAndValue('brand_id', brandId, options);
     }
 
     public async add(data: IAddModel): Promise<ModelModel>{

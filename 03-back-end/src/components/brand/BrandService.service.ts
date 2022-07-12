@@ -24,7 +24,7 @@ class BrandService extends BaseService<BrandModel, BrandAdapterOptions> {
     }
 
     public async getAllByCategoryId(categoryId: number , options: BrandAdapterOptions): Promise<BrandModel []> {
-        return this.getAllByFieldNameAnValue('category_id', categoryId, options);
+        return this.getAllByFieldNameAndValue('category_id', categoryId, options);
     }
 
     public async add(data: IAddBrand): Promise<BrandModel> {

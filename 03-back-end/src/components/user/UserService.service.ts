@@ -1,3 +1,4 @@
+import { rejects } from 'assert';
 import { resolve } from 'path';
 import BaseService from '../../common/BaseService';
 import IAdapterOptions from '../../common/IAdapterOptions.interface';
@@ -60,9 +61,25 @@ export default class UserService extends BaseService<UserModel, UserAdapterOptio
 
     public async getUserByActivationCode(code: string, option: UserAdapterOptions = DefaultUserAdapterOptions): Promise<UserModel|null> {
         return new Promise((resolve, reject) => {
-            this.getAllByFieldNameAnValue("activation_code", code, option)
+            this.getAllByFieldNameAndValue("activation_code", code, option)
             .then(result => {
                 if(result.length === 0) {
+                    return resolve(null);
+                }
+
+                resolve(result[0]);
+            })
+            .catch(error => {
+                reject(error?.message);
+            });
+        });
+    }
+
+    public async getByEmail(email: string, option: IAdapterOptions = DefaultUserAdapterOptions): Promise<UserModel|null> {
+        return new Promise((resolve, reject) => {
+            this.getAllByFieldNameAndValue("email", email, option)
+            .then(result => {
+                if (result.length === 0) {
                     return resolve(null);
                 }
 

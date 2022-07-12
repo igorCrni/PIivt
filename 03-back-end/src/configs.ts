@@ -3,6 +3,8 @@ import CategoryRouter from "./components/category/CategoryRouter.router";
 import UserRouter from "./components/user/UserRouter.router";
 import fileUpload = require("express-fileupload");
 import { MailConfigurationparameters } from "./config.mail";
+import { readFileSync } from "fs";
+import AuthRouter from "./components/auth/AuthRouter.router";
 
 const DevConfig: IConfig = {
     server: {
@@ -35,6 +37,7 @@ const DevConfig: IConfig = {
     routers: [
         new CategoryRouter(),
         new UserRouter(),
+        new AuthRouter(),
     ],
 
     mail: {
@@ -43,6 +46,29 @@ const DevConfig: IConfig = {
         email: "",
         password: "",
         debug: true,
+    },
+    auth: {
+        user: {
+            algorithm:"RS256",
+            issuer: "PIiVT",
+            tokens: {
+                auth: {
+                    duration: 60 * 60 * 24,
+                    keys: {
+                        public: readFileSync("./.keystore/app.public","ascii"),
+                        private: readFileSync("./.keystore/app.private","ascii"),
+                    },
+                },
+                refresh: {
+                    duration: 60 * 60 * 24 * 30,
+                    keys: {
+                        public: readFileSync("./.keystore/app.public","ascii"),
+                        private: readFileSync("./.keystore/app.private","ascii"),
+                    },
+                }
+            },
+        },
+        allowAllRoutesWithoutAuthTokens: true,
     },
     fileUploads: {
         maxFiles: 10,

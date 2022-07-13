@@ -21,6 +21,8 @@ import SeatsService from "./components/seats/SeatsService.service";
 import SteeringWheelSideService from "./components/steering_wheel_side/SteeringWheelSideService.service";
 import AirConditionService from "./components/air_condition/AirConditionService.service";
 import DamageService from "./components/damge/DamageService.service";
+import OriginService from "./components/origin/OriginService.service";
+import SafetyService from "./components/safety/SafetyService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -58,6 +60,8 @@ const applicationResources: IApplicationResources = {
         steeringWheelSide: null,
         airCondition: null,
         damage: null,
+        origin: null,
+        safety: null,
     }
 };
 applicationResources.services.category = new CategoryService(applicationResources);
@@ -74,6 +78,8 @@ applicationResources.services.seats = new SeatsService(applicationResources);
 applicationResources.services.steeringWheelSide = new SteeringWheelSideService(applicationResources);
 applicationResources.services.airCondition = new AirConditionService(applicationResources);
 applicationResources.services.damage = new DamageService(applicationResources);
+applicationResources.services.origin = new OriginService(applicationResources);
+applicationResources.services.safety = new SafetyService(applicationResources);
 
 
 

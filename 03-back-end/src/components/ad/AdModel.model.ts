@@ -20,6 +20,7 @@ class AdModel implements IModel {
     airConditionId: number;
     damgeId: number;
     originId: number;
+    safetyId: number;
 }
 
 export default AdModel;

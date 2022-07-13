@@ -13,6 +13,8 @@ import SeatsService from '../components/seats/SeatsService.service';
 import SteeringWheelSideService from '../components/steering_wheel_side/SteeringWheelSideService.service';
 import AirConditionService from '../components/air_condition/AirConditionService.service';
 import DamageService from '../components/damge/DamageService.service';
+import OriginService from '../components/origin/OriginService.service';
+import SafetyService from '../components/safety/SafetyService.service';
 
 export interface IServices {
     category: CategoryService;
@@ -29,6 +31,8 @@ export interface IServices {
     steeringWheelSide: SteeringWheelSideService;
     airCondition: AirConditionService;
     damage: DamageService;
+    origin: OriginService;
+    safety: SafetyService;
 }
 
 export default interface IApplicationResources {

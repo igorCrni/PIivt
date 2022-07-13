@@ -18,6 +18,7 @@ class AdModel implements IModel {
     seatsId: number;
     steeringWheelSideId: number;
     airConditionId: number;
+    damgeId: number;
 }
 
 export default AdModel;

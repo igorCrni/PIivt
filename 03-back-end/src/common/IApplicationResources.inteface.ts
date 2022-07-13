@@ -9,6 +9,7 @@ import FuelTypeService from '../components/fuel_type/FuelTypeService.service';
 import DriveService from '../components/drive/DriveService.service';
 import TransmissionService from '../components/transmission/TransmissionService.service';
 import DoorsService from '../components/doors/DoorsService.service';
+import SeatsService from '../components/seats/SeatsService.service';
 
 export interface IServices {
     category: CategoryService;
@@ -21,6 +22,7 @@ export interface IServices {
     drive: DriveService;
     transmission: TransmissionService;
     doors: DoorsService;
+    seats: SeatsService;
 }
 
 export default interface IApplicationResources {

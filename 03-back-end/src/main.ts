@@ -17,6 +17,7 @@ import DriveService from "./components/drive/DriveService.service";
 import TransmissionService from "./components/transmission/TransmissionService.service";
 import DoorsService from "./components/doors/DoorsService.service";
 import CarBodyService from "./components/car_body/CarBodyService.service";
+import SeatsService from "./components/seats/SeatsService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -50,6 +51,7 @@ const applicationResources: IApplicationResources = {
         drive: null,
         transmission: null,
         doors: null,
+        seats: null,
     }
 };
 applicationResources.services.category = new CategoryService(applicationResources);
@@ -62,6 +64,7 @@ applicationResources.services.fuelType = new FuelTypeService(applicationResource
 applicationResources.services.drive = new DriveService(applicationResources);
 applicationResources.services.transmission = new TransmissionService(applicationResources);
 applicationResources.services.doors = new DoorsService(applicationResources);
+applicationResources.services.seats = new SeatsService(applicationResources);
 
 
 

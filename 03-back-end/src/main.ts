@@ -12,6 +12,11 @@ import ModelService from "./components/model/ModelService.service";
 import UserService from "./components/user/UserService.service";
 import fileUpload = require("express-fileupload");
 import PhotoService from "./components/photo/PhotoService.service";
+import FuelTypeService from "./components/fuel_type/FuelTypeService.service";
+import DriveService from "./components/drive/DriveService.service";
+import TransmissionService from "./components/transmission/TransmissionService.service";
+import DoorsService from "./components/doors/DoorsService.service";
+import CarBodyService from "./components/car_body/CarBodyService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -40,14 +45,24 @@ const applicationResources: IApplicationResources = {
         model: null,
         user: null,
         photo: null,
+        carBody: null,
+        fuelType: null,
+        drive: null,
+        transmission: null,
+        doors: null,
     }
 };
-
 applicationResources.services.category = new CategoryService(applicationResources);
 applicationResources.services.brand = new BrandService(applicationResources);
 applicationResources.services.model = new ModelService(applicationResources);
 applicationResources.services.user = new UserService(applicationResources);
 applicationResources.services.photo = new PhotoService(applicationResources);
+applicationResources.services.carBody = new CarBodyService(applicationResources);
+applicationResources.services.fuelType = new FuelTypeService(applicationResources);
+applicationResources.services.drive = new DriveService(applicationResources);
+applicationResources.services.transmission = new TransmissionService(applicationResources);
+applicationResources.services.doors = new DoorsService(applicationResources);
+
 
 
 const application: express.Application = express();

@@ -7,16 +7,20 @@ import PhotoService from '../components/photo/PhotoService.service';
 import CarBodyService from '../components/car_body/CarBodyService.service';
 import FuelTypeService from '../components/fuel_type/FuelTypeService.service';
 import DriveService from '../components/drive/DriveService.service';
+import TransmissionService from '../components/transmission/TransmissionService.service';
+import DoorsService from '../components/doors/DoorsService.service';
 
 export interface IServices {
     category: CategoryService;
     brand: BrandService;
     model: ModelService;
     user: UserService;
-    carBody: CarBodyService;
     photo: PhotoService;
+    carBody: CarBodyService;
     fuelType: FuelTypeService;
     drive: DriveService;
+    transmission: TransmissionService;
+    doors: DoorsService;
 }
 
 export default interface IApplicationResources {

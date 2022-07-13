@@ -19,6 +19,7 @@ import DoorsService from "./components/doors/DoorsService.service";
 import CarBodyService from "./components/car_body/CarBodyService.service";
 import SeatsService from "./components/seats/SeatsService.service";
 import SteeringWheelSideService from "./components/steering_wheel_side/SteeringWheelSideService.service";
+import AirConditionService from "./components/air_condition/AirConditionService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -54,6 +55,7 @@ const applicationResources: IApplicationResources = {
         doors: null,
         seats: null,
         steeringWheelSide: null,
+        airCondition: null,
     }
 };
 applicationResources.services.category = new CategoryService(applicationResources);
@@ -68,6 +70,7 @@ applicationResources.services.transmission = new TransmissionService(application
 applicationResources.services.doors = new DoorsService(applicationResources);
 applicationResources.services.seats = new SeatsService(applicationResources);
 applicationResources.services.steeringWheelSide = new SteeringWheelSideService(applicationResources);
+applicationResources.services.airCondition = new AirConditionService(applicationResources);
 
 
 

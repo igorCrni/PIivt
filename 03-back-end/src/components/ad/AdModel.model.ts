@@ -21,6 +21,8 @@ class AdModel implements IModel {
     damgeId: number;
     originId: number;
     safetyId: number;
+    equipmentId: number;
+    vehicleConditionId: number;
 }
 
 export default AdModel;

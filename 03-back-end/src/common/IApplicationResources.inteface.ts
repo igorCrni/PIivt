@@ -15,6 +15,8 @@ import AirConditionService from '../components/air_condition/AirConditionService
 import DamageService from '../components/damge/DamageService.service';
 import OriginService from '../components/origin/OriginService.service';
 import SafetyService from '../components/safety/SafetyService.service';
+import EquipmentService from '../components/equipment/EquipmentService.service';
+import VehicleConditionService from '../components/vehicle_condition/VehicleConditionService.service';
 
 export interface IServices {
     category: CategoryService;
@@ -33,6 +35,8 @@ export interface IServices {
     damage: DamageService;
     origin: OriginService;
     safety: SafetyService;
+    equipment: EquipmentService;
+    vehicleCondition: VehicleConditionService;
 }
 
 export default interface IApplicationResources {

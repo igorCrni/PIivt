@@ -12,11 +12,11 @@ export default class DriveService extends BaseService<DriveModel, IDriveAdapterO
     protected async adaptToModel(data: any): Promise<DriveModel> {
         const drive: DriveModel = new DriveModel();
 
-        drive.driveId =     +data?.drive_id;
-        drive.fwd =          data?.fwd;
-        drive.rwd =          data?.rwd;
-        drive.awd =       data?.awd;
-        drive.awdReduction =       data?.awd_reduction;
+        drive.driveId =         +data?.drive_id;
+        drive.fwd =             data?.fwd;
+        drive.rwd =             data?.rwd;
+        drive.awd =             data?.awd;
+        drive.awdReduction =    data?.awd_reduction;
 
         return drive;
     }

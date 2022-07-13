@@ -4,23 +4,24 @@ import IServiceData from '../../../common/IServiceData.interface';
 const ajv = new Ajv();
 
 export interface IAddDoorsDto {
-    twoThree: boolean;
-    fourFive: boolean;
+    two_three: boolean;
+    four_five: boolean;
 
 }
 
 export default interface IAddDoors extends IServiceData {
-    twoThree: boolean;
-    fourFive: boolean;
+    two_three: boolean;
+    four_five: boolean;
+
 }   
 
 const AddDoorsSchema = {
     type: "object",
     properties: {
-        twoThree: {
+        two_three: {
             type: "boolean"
         },
-        fourFive: {
+        four_five: {
             type: "boolean"
         },
     },

@@ -4,62 +4,62 @@ import IServiceData from '../../../common/IServiceData.interface';
 const ajv = new Ajv();
 
 export interface IAddSafetyDto {
-    airbagDriver: boolean;
-    airbagPass: boolean;
-    sideAirbag: boolean;
-    childLock: boolean;
+    airbag_driver: boolean;
+    airbag_pass: boolean;
+    side_airbag: boolean;
+    child_lock: boolean;
     abs: boolean;
     esp: boolean;
     asr: boolean;
     alarm: boolean;
-    codedKey: boolean;
-    engineLock: boolean;
-    centralLocking: boolean;
-    mechanicalProtection: boolean;
+    coded_key: boolean;
+    engine_lock: boolean;
+    central_locking: boolean;
+    mechanical_protection: boolean;
     keyless: boolean;
-    laneAssist: boolean;
-    blindSpot: boolean;
+    lane_assist: boolean;
+    blind_spot: boolean;
     obd: boolean;
-    kneeAirbags: boolean;
-    autoBraking: boolean;
+    knee_airbags: boolean;
+    auto_braking: boolean;
     
 }
 
 export default interface IAddSafety extends IServiceData {
-    airbagDriver: boolean;
-    airbagPass: boolean;
-    sideAirbag: boolean;
-    childLock: boolean;
+    airbag_driver: boolean;
+    airbag_pass: boolean;
+    side_airbag: boolean;
+    child_lock: boolean;
     abs: boolean;
     esp: boolean;
     asr: boolean;
     alarm: boolean;
-    codedKey: boolean;
-    engineLock: boolean;
-    centralLocking: boolean;
-    mechanicalProtection: boolean;
+    coded_key: boolean;
+    engine_lock: boolean;
+    central_locking: boolean;
+    mechanical_protection: boolean;
     keyless: boolean;
-    laneAssist: boolean;
-    blindSpot: boolean;
+    lane_assist: boolean;
+    blind_spot: boolean;
     obd: boolean;
-    kneeAirbags: boolean;
-    autoBraking: boolean;
+    knee_airbags: boolean;
+    auto_braking: boolean;
 
 }   
 
 const AddSafetySchema = {
     type: "object",
     properties: {
-        airbagDriver: {
+        airbag_driver: {
             type: "boolean"
         },
-        airbagPass: {
+        airbag_pass: {
             type: "boolean"
         },
-        sideAirbag: {
+        side_airbag: {
             type: "boolean"
         },
-        childLock: {
+        child_lock: {
             type: "boolean"
         },
         abs: {
@@ -74,34 +74,34 @@ const AddSafetySchema = {
         alarm: {
             type: "boolean"
         },
-        codedKey: {
+        coded_key: {
             type: "boolean"
         },
-        engineLock: {
+        engine_lock: {
             type: "boolean"
         },
-        centralLocking: {
+        central_locking: {
             type: "boolean"
         },
-        mechanicalProtection: {
+        mechanical_protection: {
             type: "boolean"
         },
         keyless: {
             type: "boolean"
         },
-        laneAssist: {
+        lane_assist: {
             type: "boolean"
         },
-        blindSpot: {
+        blind_spot: {
             type: "boolean"
         },
         obd: {
             type: "boolean"
         },
-        kneeAirbags: {
+        knee_airbags: {
             type: "boolean"
         },
-        autoBraking: {
+        auto_braking: {
             type: "boolean"
         },
     },

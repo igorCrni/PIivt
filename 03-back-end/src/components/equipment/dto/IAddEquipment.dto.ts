@@ -5,73 +5,73 @@ const ajv = new Ajv();
 
 export interface IAddEquipmentDto {
     metallic: boolean;
-    cruiseControl: boolean;
+    cruise_control: boolean;
     panorama: boolean;
-    mirrorHeaters: boolean;
-    fogLights: boolean;
-    parkingSensor: boolean;
-    aluminiumWheels: boolean;
-    radioCd: boolean;
-    windshieldHeaters: boolean;
-    autoParking: boolean;
-    headUpDisplay: boolean;
+    mirror_heaters: boolean;
+    fog_lights: boolean;
+    parking_sensor: boolean;
+    aluminium_wheels: boolean;
+    radio_cd: boolean;
+    windshield_heaters: boolean;
+    auto_parking: boolean;
+    head_up_display: boolean;
     multimedia: boolean;
-    seatMemory: boolean;
-    thresixtyCamera: boolean;
+    seat_memory: boolean;
+    thresixty_camera: boolean;
     mp3: boolean;
-    differentialLock: boolean;
-    cupHolders: boolean;
-    spareTire: boolean;
-    assistanceForMovingUphills: boolean;
-    appleCarplay: boolean;
-    matrixHeadlights: boolean;
-    bumpersInTheColorOfTheCar: boolean;
-    remoteLock: boolean;
-    tintedGlass: boolean;
-    heightAdjustableSeats: boolean;
-    xenonLights: boolean;
+    differential_lock: boolean;
+    cup_holders: boolean;
+    spare_tire: boolean;
+    assistance_for_moving_uphills: boolean;
+    apple_carplay: boolean;
+    matrix_headlights: boolean;
+    bumpers_in_the_color_of_the_car: boolean;
+    remote_lock: boolean;
+    tinted_glass: boolean;
+    height_adjustable_seats: boolean;
+    xenon_lights: boolean;
     webasto: boolean;
     navigation: boolean;
     camera: boolean;
     isofix: boolean;
-    keylessIgnition: boolean;
-    startStopSistem: boolean;
+    keyless_lgnition: boolean;
+    start_stop_sistem: boolean;
 
 }
 
 export default interface IAddEquipment extends IServiceData {
     metallic: boolean;
-    cruiseControl: boolean;
+    cruise_control: boolean;
     panorama: boolean;
-    mirrorHeaters: boolean;
-    fogLights: boolean;
-    parkingSensor: boolean;
-    aluminiumWheels: boolean;
-    radioCd: boolean;
-    windshieldHeaters: boolean;
-    autoParking: boolean;
-    headUpDisplay: boolean;
+    mirror_heaters: boolean;
+    fog_lights: boolean;
+    parking_sensor: boolean;
+    aluminium_wheels: boolean;
+    radio_cd: boolean;
+    windshield_heaters: boolean;
+    auto_parking: boolean;
+    head_up_display: boolean;
     multimedia: boolean;
-    seatMemory: boolean;
-    thresixtyCamera: boolean;
+    seat_memory: boolean;
+    thresixty_camera: boolean;
     mp3: boolean;
-    differentialLock: boolean;
-    cupHolders: boolean;
-    spareTire: boolean;
-    assistanceForMovingUphills: boolean;
-    appleCarplay: boolean;
-    matrixHeadlights: boolean;
-    bumpersInTheColorOfTheCar: boolean;
-    remoteLock: boolean;
-    tintedGlass: boolean;
-    heightAdjustableSeats: boolean;
-    xenonLights: boolean;
+    differential_lock: boolean;
+    cup_holders: boolean;
+    spare_tire: boolean;
+    assistance_for_moving_uphills: boolean;
+    apple_carplay: boolean;
+    matrix_headlights: boolean;
+    bumpers_in_the_color_of_the_car: boolean;
+    remote_lock: boolean;
+    tinted_glass: boolean;
+    height_adjustable_seats: boolean;
+    xenon_lights: boolean;
     webasto: boolean;
     navigation: boolean;
     camera: boolean;
     isofix: boolean;
-    keylessIgnition: boolean;
-    startStopSistem: boolean;
+    keyless_lgnition: boolean;
+    start_stop_sistem: boolean;
 
 }   
 
@@ -81,79 +81,79 @@ const AddEquipmentSchema = {
         metallic: {
             type: "boolean"
         },
-        cruiseControl: {
+        cruise_control: {
             type: "boolean"
         },
         panorama: {
             type: "boolean"
         },
-        mirrorHeaters: {
+        mirror_heaters: {
             type: "boolean"
         },
-        fogLights: {
+        fog_lights: {
             type: "boolean"
         },
-        parkingSensor: {
+        parking_sensor: {
             type: "boolean"
         },
-        aluminiumWheels: {
+        aluminium_wheels: {
             type: "boolean"
         },
-        radioCd: {
+        radio_cd: {
             type: "boolean"
         },
-        windshieldHeaters: {
+        windshield_heaters: {
             type: "boolean"
         },
-        autoParking: {
+        auto_parking: {
             type: "boolean"
         },
-        headUpDisplay: {
+        head_up_display: {
             type: "boolean"
         },
         multimedia: {
             type: "boolean"
         },
-        seatMemory: {
+        seat_memory: {
             type: "boolean"
         },
-        thresixtyCamera: {
+        thresixty_camera: {
             type: "boolean"
         },
         mp3: {
             type: "boolean"
         },
-        differentialLock: {
+        differential_lock: {
             type: "boolean"
         },
-        cupHolders: {
+        cup_holders: {
             type: "boolean"
         },
-        spareTire: {
+        spare_tire: {
             type: "boolean"
         },
-        assistanceForMovingUphills: {
+        assistance_for_moving_uphills: {
             type: "boolean"
         },
-        appleCarplay: {
+        apple_carplay: {
             type: "boolean"
         },
-        matrixHeadlights: {
+        matrix_headlights: {
             type: "boolean"
         },
-        bumpersInTheColorOfTheCar: {
+        bumpers_in_the_color_of_the_car: {
             type: "boolean"
         },
-        remoteLock: {
+        remote_lock: {
             type: "boolean"
         },
-        tintedGlass: {
+        tinted_glass: {
             type: "boolean"
         },
-        heightAdjustableSeats: {
+        height_adjustable_seats: {
             type: "boolean"
         },
-        xenonLights: {
+        xenon_lights: {
             type: "boolean"
         },
         webasto: {
@@ -168,10 +168,10 @@ const AddEquipmentSchema = {
         isofix: {
             type: "boolean"
         },
-        keylessIgnition: {
+        keyless_lgnition: {
             type: "boolean"
         },
-        startStopSistem: {
+        start_stop_sistem: {
             type: "boolean"
         },
     },

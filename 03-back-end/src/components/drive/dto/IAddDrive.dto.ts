@@ -7,7 +7,7 @@ export interface IAddDriveDto {
     fwd: boolean;
     rwd: boolean;
     awd: boolean;
-    awdReduction: boolean;
+    awd_reduction: boolean;
 
 }
 
@@ -15,7 +15,7 @@ export default interface IAddDrive extends IServiceData {
     fwd: boolean;
     rwd: boolean;
     awd: boolean;
-    awdReduction: boolean;
+    awd_reduction: boolean;
 }   
 
 const AddDriveSchema = {
@@ -30,7 +30,7 @@ const AddDriveSchema = {
         awd: {
             type: "boolean"
         },
-        awdReduction: {
+        awd_reduction: {
             type: "boolean"
         },
     },

@@ -4,14 +4,14 @@ import IServiceData from '../../../common/IServiceData.interface';
 const ajv = new Ajv();
 
 export interface IAddVehicleConditionDto {
-    firstOwner: boolean;
-    servisBook: boolean;
-    adaptedForTheDisabled: boolean;
-    drivingSchoolVehicle: boolean;
-    spareKey: boolean;
+    first_owner: boolean;
+    servis_book: boolean;
+    adapted_for_the_disabled: boolean;
+    driving_school_vehicle: boolean;
+    spare_key: boolean;
     taxi: boolean;
     restored: boolean;
-    testVehicle: boolean;
+    test_vehicle: boolean;
     garaged: boolean;
     oldtimer: boolean;
     tuning: boolean;
@@ -19,14 +19,14 @@ export interface IAddVehicleConditionDto {
 }
 
 export default interface IAddVehicleCondition extends IServiceData {
-    firstOwner: boolean;
-    servisBook: boolean;
-    adaptedForTheDisabled: boolean;
-    drivingSchoolVehicle: boolean;
-    spareKey: boolean;
+    first_owner: boolean;
+    servis_book: boolean;
+    adapted_for_the_disabled: boolean;
+    driving_school_vehicle: boolean;
+    spare_key: boolean;
     taxi: boolean;
     restored: boolean;
-    testVehicle: boolean;
+    test_vehicle: boolean;
     garaged: boolean;
     oldtimer: boolean;
     tuning: boolean;
@@ -36,19 +36,19 @@ export default interface IAddVehicleCondition extends IServiceData {
 const AddVehicleConditionSchema = {
     type: "object",
     properties: {
-        firstOwner: {
+        first_owner: {
             type: "boolean"
         },
-        servisBook: {
+        servis_book: {
             type: "boolean"
         },
-        adaptedForTheDisabled: {
+        adapted_for_the_disabled: {
             type: "boolean"
         },
-        drivingSchoolVehicle: {
+        driving_school_vehicle: {
             type: "boolean"
         },
-        spareKey: {
+        spare_key: {
             type: "boolean"
         },
         taxi: {
@@ -57,7 +57,7 @@ const AddVehicleConditionSchema = {
         restored: {
             type: "boolean"
         },
-        testVehicle: {
+        test_vehicle: {
             type: "boolean"
         },
         garaged: {

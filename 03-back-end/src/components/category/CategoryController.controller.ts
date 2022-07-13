@@ -5,8 +5,9 @@ import { AddBrandValidator, IAddBrandDto } from '../brand/dto/IAddBrand.dto';
 import { EditCategoryValidator, IEditCategoryDto } from './dto/IEditCategory.dto';
 import IEditBrandDto, { EditBrandValidator } from '../brand/dto/IEditBrand.dto';
 import BaseController from '../../common/BaseController';
-import { AddModelValidator } from '../model/dto/IAddModel.dto';
+import { AddModelValidator, IAddModelDto } from '../model/dto/IAddModel.dto';
 import IEditModelDto from '../model/dto/IEditModel.dto';
+import IAddModel from '../model/dto/IAddModel.dto';
 
 class CategoryController extends BaseController {
     
@@ -197,7 +198,7 @@ class CategoryController extends BaseController {
         }
 
         this.services.model.getById(brandId, {
-            
+
         })
         .then(result =>{
             if(result === null) {

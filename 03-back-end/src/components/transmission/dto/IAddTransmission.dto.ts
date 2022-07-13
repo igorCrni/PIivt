@@ -4,33 +4,33 @@ import IServiceData from '../../../common/IServiceData.interface';
 const ajv = new Ajv();
 
 export interface IAddTransmissionDto {
-    manual4Speed: boolean;
-    manual5Speed: boolean;
-    manual6Speed: boolean;
-    automaticSemiauto: boolean;
+    manual_4_speed: boolean;
+    manual_5_speed: boolean;
+    manual_6_speed: boolean;
+    automatic_semiauto: boolean;
 
 }
 
 export default interface IAddTransmission extends IServiceData {
-    manual4Speed: boolean;
-    manual5Speed: boolean;
-    manual6Speed: boolean;
-    automaticSemiauto: boolean;
+    manual_4_speed: boolean;
+    manual_5_speed: boolean;
+    manual_6_speed: boolean;
+    automatic_semiauto: boolean;
 }   
 
 const AddTransmissionSchema = {
     type: "object",
     properties: {
-        manual4Speed: {
+        manual_4_speed: {
             type: "boolean"
         },
-        manual5Speed: {
+        manual_5_speed: {
             type: "boolean"
         },
-        manual6Speed: {
+        manual_6_speed: {
             type: "boolean"
         },
-        automaticSemiauto: {
+        automatic_semiauto: {
             type: "boolean"
         },
     },

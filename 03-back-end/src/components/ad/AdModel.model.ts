@@ -3,6 +3,11 @@ import IModel from "../../common/IModel.inteface";
 
 class AdModel implements IModel {
 
+    adId: number;
+    title: string;
+    price: number;
+    fixedPrice: boolean;
+    year: number;
 
     //FKs:
     categoryId: number;

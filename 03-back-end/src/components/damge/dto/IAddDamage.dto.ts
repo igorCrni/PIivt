@@ -4,29 +4,29 @@ import IServiceData from '../../../common/IServiceData.interface';
 const ajv = new Ajv();
 
 export interface IAddDamageDto {
-    notDamaged: boolean;
-    damagedRunning: boolean;
-    damagedNotRunning: boolean;
+    not_damaged: boolean;
+    damaged_running: boolean;
+    damaged_not_running: boolean;
     
 }
 
 export default interface IAddDamage extends IServiceData {
-    notDamaged: boolean;
-    damagedRunning: boolean;
-    damagedNotRunning: boolean;
+    not_damaged: boolean;
+    damaged_running: boolean;
+    damaged_not_running: boolean;
 
 }   
 
 const AddDamageSchema = {
     type: "object",
     properties: {
-        notDamaged: {
+        not_damaged: {
             type: "boolean"
         },
-        damagedRunning: {
+        damaged_running: {
             type: "boolean"
         },
-        damagedNotRunning: {
+        damaged_not_running: {
             type: "boolean"
         },
     },

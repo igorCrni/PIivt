@@ -6,8 +6,8 @@ const ajv = new Ajv();
 export interface IAddFuelTypeDto {
     petrol: boolean;
     diesel: boolean;
-    petrolTng: boolean;
-    petrolCng: boolean;
+    petrol_tng: boolean;
+    petrol_cng: boolean;
     electric: boolean;
     hybrid: boolean;
 
@@ -16,8 +16,8 @@ export interface IAddFuelTypeDto {
 export default interface IAddFuelType extends IServiceData {
     petrol: boolean;
     diesel: boolean;
-    petrolTng: boolean;
-    petrolCng: boolean;
+    petrol_tng: boolean;
+    petrol_cng: boolean;
     electric: boolean;
     hybrid: boolean;
 }   
@@ -31,10 +31,10 @@ const AddFuelTypeSchema = {
         diesel: {
             type: "boolean"
         },
-        petrolTng: {
+        petrol_tng: {
             type: "boolean"
         },
-        petrolCng: {
+        petrol_cng: {
             type: "boolean"
         },
         electric: {

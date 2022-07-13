@@ -4,29 +4,29 @@ import IServiceData from '../../../common/IServiceData.interface';
 const ajv = new Ajv();
 
 export interface IAddOriginDto {
-    domesticTag: boolean;
-    onCustomer: boolean;
-    foreginTag: boolean;
+    domestic_tag: boolean;
+    on_customer: boolean;
+    foregin_tag: boolean;
     
 }
 
 export default interface IAddOrigin extends IServiceData {
-    domesticTag: boolean;
-    onCustomer: boolean;
-    foreginTag: boolean;
+    domestic_tag: boolean;
+    on_customer: boolean;
+    foregin_tag: boolean;
 
 }   
 
 const AddOriginSchema = {
     type: "object",
     properties: {
-        domesticTag: {
+        domestic_tag: {
             type: "boolean"
         },
-        onCustomer: {
+        on_customer: {
             type: "boolean"
         },
-        foreginTag: {
+        foregin_tag: {
             type: "boolean"
         },
     },

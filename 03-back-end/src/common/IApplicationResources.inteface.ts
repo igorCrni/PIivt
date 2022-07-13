@@ -5,6 +5,7 @@ import ModelService from "../components/model/ModelService.service";
 import UserService from "../components/user/UserService.service";
 import PhotoService from '../components/photo/PhotoService.service';
 import CarBodyService from '../components/car_body/CarBodyService.service';
+import FuelTypeService from '../components/fuel_type/FuelType.service';
 
 export interface IServices {
     category: CategoryService;
@@ -13,6 +14,7 @@ export interface IServices {
     user: UserService;
     carBody: CarBodyService;
     photo: PhotoService;
+    fuelType: FuelTypeService;
 }
 
 export default interface IApplicationResources {

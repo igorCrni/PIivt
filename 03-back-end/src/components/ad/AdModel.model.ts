@@ -11,6 +11,8 @@ class AdModel implements IModel {
     userId: number;
     photoId:number;
     carBodyId:number;
+    fuelTypeId: number;
+    driveId: number;
 }
 
 export default AdModel;

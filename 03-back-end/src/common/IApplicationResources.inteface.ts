@@ -10,6 +10,7 @@ import DriveService from '../components/drive/DriveService.service';
 import TransmissionService from '../components/transmission/TransmissionService.service';
 import DoorsService from '../components/doors/DoorsService.service';
 import SeatsService from '../components/seats/SeatsService.service';
+import SteeringWheelSideService from '../components/steering_wheel_side/SteeringWheelSideService.service';
 
 export interface IServices {
     category: CategoryService;
@@ -23,6 +24,7 @@ export interface IServices {
     transmission: TransmissionService;
     doors: DoorsService;
     seats: SeatsService;
+    steeringWheelSide: SteeringWheelSideService;
 }
 
 export default interface IApplicationResources {

@@ -12,19 +12,7 @@ import ModelService from "./components/model/ModelService.service";
 import UserService from "./components/user/UserService.service";
 import fileUpload = require("express-fileupload");
 import PhotoService from "./components/photo/PhotoService.service";
-import FuelTypeService from "./components/fuel_type/FuelTypeService.service";
-import DriveService from "./components/drive/DriveService.service";
-import TransmissionService from "./components/transmission/TransmissionService.service";
-import DoorsService from "./components/doors/DoorsService.service";
-import CarBodyService from "./components/car_body/CarBodyService.service";
-import SeatsService from "./components/seats/SeatsService.service";
-import SteeringWheelSideService from "./components/steering_wheel_side/SteeringWheelSideService.service";
-import AirConditionService from "./components/air_condition/AirConditionService.service";
-import DamageService from "./components/damge/DamageService.service";
-import OriginService from "./components/origin/OriginService.service";
-import SafetyService from "./components/safety/SafetyService.service";
-import EquipmentService from "./components/equipment/EquipmentService.service";
-import VehicleConditionService from "./components/vehicle_condition/VehicleConditionService.service";
+import AdService from "./components/ad/AdService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -42,8 +30,28 @@ const db = await mysql2.createConnection({
     database: config.database.database,
     charset: config.database.charset,
     timezone: config.database.timezone,
-    //supportBigNumbers: config.database.supportBigNumber,
+    supportBigNumbers: config.database.supportBigNumbers,
 });
+
+function attactConnectionMonitoring(db: mysql2.Connection) {
+    db.on('error', async error => {
+        if (!error.fatal) {
+            return;
+        }
+
+        if (error?.code !== 'PROTOCOL_CONNECTION_LOST') {
+            throw error;
+        }
+
+        console.log('Reconnecting to the database server...');
+
+        db = await mysql2.createConnection(db.config);
+
+        attactConnectionMonitoring(db);
+
+        db.connect();
+    });
+}
 
 const applicationResources: IApplicationResources = {
     databaseConnection: db,
@@ -53,19 +61,7 @@ const applicationResources: IApplicationResources = {
         model: null,
         user: null,
         photo: null,
-        carBody: null,
-        fuelType: null,
-        drive: null,
-        transmission: null,
-        doors: null,
-        seats: null,
-        steeringWheelSide: null,
-        airCondition: null,
-        damage: null,
-        origin: null,
-        safety: null,
-        equipment: null,
-        vehicleCondition: null,
+        ad: null,
     }
 };
 applicationResources.services.category = new CategoryService(applicationResources);
@@ -73,19 +69,7 @@ applicationResources.services.brand = new BrandService(applicationResources);
 applicationResources.services.model = new ModelService(applicationResources);
 applicationResources.services.user = new UserService(applicationResources);
 applicationResources.services.photo = new PhotoService(applicationResources);
-applicationResources.services.carBody = new CarBodyService(applicationResources);
-applicationResources.services.fuelType = new FuelTypeService(applicationResources);
-applicationResources.services.drive = new DriveService(applicationResources);
-applicationResources.services.transmission = new TransmissionService(applicationResources);
-applicationResources.services.doors = new DoorsService(applicationResources);
-applicationResources.services.seats = new SeatsService(applicationResources);
-applicationResources.services.steeringWheelSide = new SteeringWheelSideService(applicationResources);
-applicationResources.services.airCondition = new AirConditionService(applicationResources);
-applicationResources.services.damage = new DamageService(applicationResources);
-applicationResources.services.origin = new OriginService(applicationResources);
-applicationResources.services.safety = new SafetyService(applicationResources);
-applicationResources.services.equipment = new EquipmentService(applicationResources);
-applicationResources.services.vehicleCondition = new VehicleConditionService(applicationResources);
+applicationResources.services.ad = new AdService(applicationResources);
 
 
 

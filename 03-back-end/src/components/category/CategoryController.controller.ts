@@ -25,7 +25,7 @@ class CategoryController extends BaseController {
         const id: number = +req.params?.id;
 
         this.services.category.getById(id, {
-            loadBrands: true
+            loadBrands: true,
         })
             .then(result => {
                 if (result === null) {
@@ -72,9 +72,7 @@ class CategoryController extends BaseController {
                     return res.sendStatus(404);
                 }
 
-               this.services.category.editById(id, {
-                   name: data.name
-               })
+               this.services.category.editById(id, data)
                .then(result =>{
                     res.send(result);
                })
@@ -86,6 +84,61 @@ class CategoryController extends BaseController {
                 res.status(500).send(error?.message);
             });
     }
+
+    // async getAllBrandsByCategoryId(req: Request, res: Response) {
+    //     const categoryId: number = +req.params?.cid;
+
+    //     this.services.category.getById(categoryId, {
+    //         loadBrands:false,
+    //     })
+    //     .then(result => {
+    //         if (result === null) {
+    //             return res.status(404).send("Category not found!");
+    //         }
+
+    //         this.services.brand.getAllByCategoryId(categoryId)
+    //         .then(result => {
+    //             res.send(result);
+    //         })
+    //         .catch(error => {
+    //             res.status(500).send(error?.message);
+    //         });
+    //     })
+    //     .catch(error => {
+    //         res.status(500).send(error?.message);
+    //     });
+    // }
+
+    // async getBrandById(req: Request, res: Response){
+    //     const categoryId: number = +req.params?.cid;
+    //     const brandId: number = +req.params?.bid;
+
+    //     this.services.category.getById(categoryId,{
+    //         loadBrands: false,
+    //     })
+    //     .then(result => {
+    //         if(result === null){
+    //             return res.status(404).send("Category not found!");
+    //         }
+
+    //         this.services.brand.getById(brandId, {
+    //             loadModels: true,
+    //         })
+    //             .then(result => {
+    //                 if (result === null) {
+    //                     return res.sendStatus(404);
+    //                 }
+    
+    //                 res.send(result);
+    //             })
+    //             .catch(error => {
+    //                 res.status(500).send(error?.message);
+    //             });
+    //     })
+    //     .catch(error => {
+    //         res.status(500).send(error?.message);
+    //     })
+    // }
 
     async addBrand(req: Request, res: Response) {
         const categoryId: number = +req.params?.cid;
@@ -135,7 +188,9 @@ class CategoryController extends BaseController {
                 return res.status(404).send('Category not found!');
             }
 
-            this.services.brand.getById(brandId, {})
+            this.services.brand.getById(brandId, {
+                loadModels:true
+            })
             .then(result =>{
                 if(result === null) {
                     return res.status(404).send('Brand not found!');
@@ -159,33 +214,33 @@ class CategoryController extends BaseController {
 
     async addModel(req: Request, res: Response) {
         const brandId: number = +req.params?.bid;
-        const data = req.body as IAddBrandDto;
+        const data               =  req.body as IAddModelDto;
 
-        if(!AddModelValidator(data)) {
+        if (!AddModelValidator(data)) {
             return res.status(400).send(AddModelValidator.errors);
         }
 
-        this.services.model.getById(brandId, {loadBrands: false })
-            .then(result => {
-                if (result === null) {
-                    return res.sendStatus(404);
+        this.services.brand.getById(brandId, { loadModels: false })
+        .then(result => {
+            if (result === null) {
+                throw {
+                    status: 404,
+                    message: 'Brand not found!',
                 }
-
-                this.services.model.add({
-                    name: data.name,
-                    brand_id: brandId
-                })
-                .then(result =>{
-                    res.send(result);
-                })
-                .catch(error => {
-                    res.status(400).send(error?.message);
-                });
-
+            }
+        })
+        .then(() => {
+            return this.services.model.add({
+                name: data.name,
+                brand_id: brandId,
             })
-            .catch(error => {
-                res.status(500).send(error?.message);
-            });
+        })
+        .then(result => {
+            res.send(result);
+        })
+        .catch(error => {
+            res.status(error?.status ?? 500).send(error?.message);
+        });
     }
 
     async editModel(req: Request, res: Response) {
@@ -197,8 +252,8 @@ class CategoryController extends BaseController {
             return res.status(400).send(EditBrandValidator.errors);
         }
 
-        this.services.model.getById(brandId, {
-
+        this.services.brand.getById(brandId, {
+            loadModels: false,
         })
         .then(result =>{
             if(result === null) {

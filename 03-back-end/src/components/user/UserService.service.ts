@@ -6,22 +6,22 @@ import IEditUser from './dto/IEditUser.dto';
 import { IAddUser } from './dto/IRegisteruser.dto';
 import UserModel from './UserModel.model';
 
-export class UserAdapterOptions implements IAdapterOptions {
+export interface IUserAdapterOptions extends IAdapterOptions {
     removePassword: boolean;
     removeActivationCode: boolean;
 }
 
-export const DefaultUserAdapterOptions: UserAdapterOptions = {
+export const DefaultUserAdapterOptions: IUserAdapterOptions = {
     removePassword: false,
     removeActivationCode: false,
 }
 
-export default class UserService extends BaseService<UserModel, UserAdapterOptions> {
+export default class UserService extends BaseService<UserModel, IUserAdapterOptions> {
     tableName(): string {
         return "user";
     }
 
-    protected async adaptToModel(data: any, options: UserAdapterOptions = DefaultUserAdapterOptions): Promise<UserModel> {
+    protected async adaptToModel(data: any, options: IUserAdapterOptions = DefaultUserAdapterOptions): Promise<UserModel> {
         const user = new UserModel();
 
         user.userId =          +data?.user_id;
@@ -59,7 +59,7 @@ export default class UserService extends BaseService<UserModel, UserAdapterOptio
         });
     }
 
-    public async getUserByActivationCode(code: string, option: UserAdapterOptions = DefaultUserAdapterOptions): Promise<UserModel|null> {
+    public async getUserByActivationCode(code: string, option: IUserAdapterOptions = DefaultUserAdapterOptions): Promise<UserModel|null> {
         return new Promise((resolve, reject) => {
             this.getAllByFieldNameAndValue("activation_code", code, option)
             .then(result => {
@@ -75,7 +75,7 @@ export default class UserService extends BaseService<UserModel, UserAdapterOptio
         });
     }
 
-    public async getByEmail(email: string, option: IAdapterOptions = DefaultUserAdapterOptions): Promise<UserModel|null> {
+    public async getByEmail(email: string, option: IUserAdapterOptions = DefaultUserAdapterOptions): Promise<UserModel|null> {
         return new Promise((resolve, reject) => {
             this.getAllByFieldNameAndValue("email", email, option)
             .then(result => {

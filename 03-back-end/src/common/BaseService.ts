@@ -35,16 +35,17 @@ export default abstract class BaseService<ReturnModel extends IModel, AdapterOpt
 
     abstract tableName(): string;
 
-    protected abstract adaptToModel(data: any, options: IAdapterOptions): Promise<ReturnModel>;
+    protected abstract adaptToModel(data: any, options: AdapterOptions): Promise<ReturnModel>;
 
-    public getAll(options: IAdapterOptions): Promise<ReturnModel[]> {
+    public getAll(options: AdapterOptions): Promise<ReturnModel[]> {
         const tableName = this.tableName();
 
-        return new Promise<ReturnModel[]> (
+        return new Promise<ReturnModel[]>(
             (resolve, reject) => {
-                const sql: string = `SELECT * FROM \`${tableName}\`;`;
+                const sql: string = `SELECT * FROM \`${ tableName }\`;`;
+
                 this.db.execute(sql)
-                    .then(async ([rows]) =>{
+                    .then( async ( [ rows ] ) => {
                         if (rows === undefined) {
                             return resolve([]);
                         }
@@ -53,26 +54,28 @@ export default abstract class BaseService<ReturnModel extends IModel, AdapterOpt
 
                         for (const row of rows as mysql2.RowDataPacket[]) {
                             items.push(
-                                await this.adaptToModel(row, options) );
+                                await this.adaptToModel(row, options)
+                            );
                         }
 
                         resolve(items);
                     })
-                    .catch(error =>{
+                    .catch(error => {
                         reject(error);
                     });
             }
         );
-     }
-     public getById(id: number, options: IAdapterOptions): Promise<ReturnModel|null> {
+    }
+
+    public getById(id: number, options: AdapterOptions): Promise<ReturnModel|null> {
         const tableName = this.tableName();
 
-        return new Promise<ReturnModel> (
+        return new Promise<ReturnModel>(
             (resolve, reject) => {
-                const sql: string = `SELECT * FROM \`${tableName}\` WHERE ${tableName}_id = ?;`;
+                const sql: string = `SELECT * FROM \`${ tableName }\` WHERE ${tableName}_id = ?;`;
 
-                this.db.execute(sql, [id])
-                    .then(async ([rows]) =>{
+                this.db.execute(sql, [ id ])
+                    .then( async ( [ rows ] ) => {
                         if (rows === undefined) {
                             return resolve(null);
                         }
@@ -88,42 +91,42 @@ export default abstract class BaseService<ReturnModel extends IModel, AdapterOpt
                             )
                         );
                     })
-                    .catch(error =>{
+                    .catch(error => {
                         reject(error);
                     });
             }
         );
     }
 
-    protected async getAllByFieldNameAndValue(fieldName: string, value: any, options: IAdapterOptions): Promise<ReturnModel []> {
+    protected async getAllByFieldNameAndValue(fieldName: string, value: any, options: AdapterOptions): Promise<ReturnModel[]> {
         const tableName = this.tableName();
-        
-        return new Promise<ReturnModel[]> (
-            (resolve, reject) => {
-                const sql: string = `SELECT * FROM \`${tableName}\` WHERE \`${fieldName}\` = ?;`;
 
-                this.db.execute(sql, [value])
-                    .then(async ([rows]) =>{
+        return new Promise<ReturnModel[]>(
+            (resolve, reject) => {
+                const sql: string = `SELECT * FROM \`${ tableName }\` WHERE \`${ fieldName }\` = ?;`;
+
+                this.db.execute(sql, [ value ])
+                    .then( async ( [ rows ] ) => {
                         if (rows === undefined) {
                             return resolve([]);
                         }
 
-                        const categories: ReturnModel[] = [];
+                        const items: ReturnModel[] = [];
 
                         for (const row of rows as mysql2.RowDataPacket[]) {
-                            categories.push(await this.adaptToModel(row, options));
+                            items.push(await this.adaptToModel(row, options));
                         }
 
-                        resolve(categories);
+                        resolve(items);
                     })
-                    .catch(error =>{
+                    .catch(error => {
                         reject(error);
                     });
             }
         );
     }
 
-    protected async baseAdd(data: IServiceData, options: AdapterOptions): Promise<ReturnModel>{
+    protected async baseAdd(data: IServiceData, options: AdapterOptions): Promise<ReturnModel> {
         const tableName = this.tableName();
 
         return new Promise((resolve, reject) => {
@@ -131,18 +134,18 @@ export default abstract class BaseService<ReturnModel extends IModel, AdapterOpt
             const sqlPairs = properties.map(property => "`" + property + "` = ?").join(", ");
             const values = properties.map(property => data[property]);
 
-            const sql: string ="INSERT `" + tableName + "` SET " + sqlPairs + ";";
+            const sql: string = "INSERT `" + tableName + "` SET " + sqlPairs + ";";
 
             this.db.execute(sql, values)
                 .then(async result => {
-                    const info:any = result;
+                    const info: any = result;
 
                     const newItemId = +(info[0]?.insertId);
 
                     const newItem: ReturnModel|null = await this.getById(newItemId, options);
 
                     if (newItem === null) {
-                        return reject({message: 'Could not add a new item into the ' + tableName + ' table!',});
+                        return reject({ message: 'Could not add a new item into the ' + tableName + ' table!', });
                     }
 
                     resolve(newItem);
@@ -153,34 +156,34 @@ export default abstract class BaseService<ReturnModel extends IModel, AdapterOpt
         });
     }
 
-    protected async baseEditById(id: number, data: IServiceData, options: AdapterOptions):Promise<ReturnModel> {
+    protected async baseEditById(id: number, data: IServiceData, options: AdapterOptions): Promise<ReturnModel> {
         const tableName = this.tableName();
 
         return new Promise((resolve, reject) => {
             const properties = Object.getOwnPropertyNames(data);
 
-            if(properties.length === 0) {
-                return reject({message: "There is nothing to change!",});
+            if (properties.length === 0) {
+                return reject({ message: "There is nothing to change!", });
             }
 
             const sqlPairs = properties.map(property => "`" + property + "` = ?").join(", ");
             const values = properties.map(property => data[property]);
-            values.push(id);
+            values.push(id); // WHERE tablename_id = ?
 
-            const sql: string ="UPDATE `" + tableName + "` SET " + sqlPairs + " WHERE `" + tableName + "_id` = ?;";
+            const sql: string = "UPDATE `" + tableName + "` SET " + sqlPairs + " WHERE `" + tableName + "_id` = ?;";
 
             this.db.execute(sql, values)
-                .then ( async result => {
+                .then(async result => {
                     const info: any = result;
 
                     if (info[0]?.affectedRows === 0) {
-                        return reject({ message:" Could not change any items in the " + tableName + " table! ",});
+                        return reject({ message: "Could not change any items in the " + tableName + " table!", });
                     }
 
                     const item: ReturnModel|null = await this.getById(id, options);
 
                     if (item === null) {
-                    return reject({ message: 'Could not find this item in the ' + tableName + ' table!', } ) ;
+                        return reject({ message: 'Could not find this item in the ' + tableName + ' table!', });
                     }
 
                     resolve(item);
@@ -190,6 +193,7 @@ export default abstract class BaseService<ReturnModel extends IModel, AdapterOpt
                 });
         });
     }
+
     protected async baseDeleteById(id: number): Promise<true> {
         const tableName = this.tableName();
 

@@ -4,35 +4,43 @@ import IAdapterOptions from '../../common/IAdapterOptions.interface';
 import IAddBrand from './dto/IAddBrand.dto';
 import IEditBrand from './dto/IEditBrand.dto';
 
-class BrandAdapterOptions implements IAdapterOptions{
-
+interface IBrandAdapterOptions extends IAdapterOptions{
+    loadModels: boolean;
 }
 
-class BrandService extends BaseService<BrandModel, BrandAdapterOptions> {
+const DefaultBrandAdapterOptions: IBrandAdapterOptions = {
+    loadModels: false,
+}
+
+class BrandService extends BaseService<BrandModel, IBrandAdapterOptions> {
     tableName(): string {
         return "brand";
     }
 
-    protected async adaptToModel(data: any): Promise<BrandModel> {
+    protected async adaptToModel(data: any, options: IBrandAdapterOptions=DefaultBrandAdapterOptions): Promise<BrandModel> {
         const brand: BrandModel = new BrandModel();
 
         brand.brandId = +data?.brand_id;
         brand.name = data?.name;
         brand.categoryId = data?.category_id;
 
+        if(options.loadModels){
+            brand.model = await this.services.model.getAllByBrandId(brand.brandId, {});
+        }
+
         return brand;
     }
 
-    public async getAllByCategoryId(categoryId: number , options: BrandAdapterOptions): Promise<BrandModel []> {
+    public async getAllByCategoryId(categoryId: number , options: IBrandAdapterOptions=DefaultBrandAdapterOptions): Promise<BrandModel []> {
         return this.getAllByFieldNameAndValue('category_id', categoryId, options);
     }
 
     public async add(data: IAddBrand): Promise<BrandModel> {
-        return this.baseAdd(data, {});
+        return this.baseAdd(data, DefaultBrandAdapterOptions);
     }
 
-    public async editById(brandId: number, data: IEditBrand):Promise <BrandModel> {
-        return this.baseEditById(brandId, data, {});
+    public async editById(brandId: number, data: IEditBrand, options: IBrandAdapterOptions=DefaultBrandAdapterOptions):Promise <BrandModel> {
+        return this.baseEditById(brandId, data, options);
     }
 }
 

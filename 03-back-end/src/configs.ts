@@ -32,7 +32,7 @@ const DevConfig: IConfig = {
         database: "piivt_app",
         charset: "utf8",
         timezone: "+01:00",
-        //supportBigNumbers: true,
+        supportBigNumbers: true,
     },
     routers: [
         new CategoryRouter(),
@@ -85,7 +85,23 @@ const DevConfig: IConfig = {
             height: {
                 min:240,
                 max:1080,
-            }
+            },
+            resize: [
+                {
+                    prefix: "small-",
+                    width: 320,
+                    height: 240,
+                    fit: "cover",
+                    defaultBackground: { r: 0, g: 0, b: 0, alpha: 1, }
+                },
+                {
+                    prefix: "medium-",
+                    width: 640,
+                    height: 480,
+                    fit: "cover",
+                    defaultBackground: { r: 0, g: 0, b: 0, alpha: 1, }
+                },
+            ],
         },
     },
 };

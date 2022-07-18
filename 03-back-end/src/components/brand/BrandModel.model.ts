@@ -1,4 +1,5 @@
 import IModel from "../../common/IModel.inteface";
+import ModelModel from '../model/ModelModel.model';
 
 class BrandModel implements IModel{
     brandId: number;
@@ -6,6 +7,8 @@ class BrandModel implements IModel{
 
     //FKs:
     categoryId: number;
+
+    model?: ModelModel[];
 }
 
 export default BrandModel;

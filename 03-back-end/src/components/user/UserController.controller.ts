@@ -10,6 +10,7 @@ import * as Mailer from "nodemailer/lib/mailer";
 import { DevConfig } from '../../configs';
 
 export default class UserController extends BaseController {
+    
     getAll(req: Request, res: Response) {
         this.services.user.getAll({
             removePassword: true,
@@ -229,7 +230,7 @@ export default class UserController extends BaseController {
     }
 
     editById(req: Request, res: Response) {
-        const id: number = +req.params?.aid;
+        const id: number = +req.params?.id;
         const data = req.body as IEditUserDto;
 
         if(!EditUserValidator(data)) {

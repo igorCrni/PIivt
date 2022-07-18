@@ -1,0 +1,690 @@
+{
+	"info": {
+		"_postman_id": "c28019e9-28da-4c9e-9465-ea5b03606227",
+		"name": "PIIVT aplikacija",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21096269"
+	},
+	"item": [
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/category",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/category/10",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a new category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Motori\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API,URL}}/api/category",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit a single category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Motori\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API,URL}}/api/category/11",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"11"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Brand",
+			"item": [
+				{
+					"name": "Add a new brand",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Opel\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API,URL}}/api/category/10/brand",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"10",
+								"brand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit a single brand",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Citroen\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API,URL}}/api/category/10/brand/18",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"10",
+								"brand",
+								"18"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Model",
+			"item": [
+				{
+					"name": "Add a new model",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Touran\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API,URL}}/api/category/10/brand/17/model",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"10",
+								"brand",
+								"17",
+								"model"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit a single model",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Golf 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API,URL}}/api/category/10/brand/17/model/5",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"10",
+								"brand",
+								"17",
+								"model",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/user",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/user/17",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \"email\": \"igor.crnogorcevic.18@singimail.rs\",\r\n    \"password\": \"Test1234\",\r\n    \"forename\": \"Igor\",\r\n    \"surname\": \"Crnogorcevic\",\r\n    \"city\": \"Beograd\",\r\n    \"phoneNumber\": \"0615384975\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API,URL}}/api/user/register",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit a single user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"surname\": \"Markovic\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API,URL}}/api/user/17",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active an account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/user/activate/168c06cd-7cea-4c40-9f20-36d6f1161464",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"activate",
+								"168c06cd-7cea-4c40-9f20-36d6f1161464"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"igor.crnogorcevic.18@singimail.rs\",\r\n    \"password\": \"Test1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API,URL}}/api/auth/user/login",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlkIjoxNiwiaWRlbnRpdHkiOiJaZWxqa28gQ3Jub2dvcmNldmljIiwiaWF0IjoxNjU3NjQ1ODQ0LCJleHAiOjE2NjAyMzc4NDQsImlzcyI6IlBJaVZUIn0.1Aez0uO_YrF0_8G5604n3FfJt2m7tk1DKP8ZKYA-sF8z-4Kkc9XLBPuVHoG9yxNp0BRc3z5djJKwBy5HEKQWzeMuC_vhyEo1PvsXJ0q5N5RMIWPfRtBeHBij6Gyi4ZKpmQE_S_EoHM5_FiOR14KWKjuPrbHRFt66GDL_Gi0dg2U687M6LEHNuVWLO6oqnnoWczVNqa7LvwPMNk2xs13oXL7g78iWU8HaSEh0kJ0mbM7bnGwP2yYyzy89MfeahFP6lOro19AI718PK942ppeLY22JANt2ay9v4NsRZ8pFFMQGRsrfasamRN9DBqkV8ZNdeuzmLox_u7-AMvlMMcPjBw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/auth/user/refresh",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"user",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ad",
+			"item": [
+				{
+					"name": "Get all by category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/category/10/ad",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"10",
+								"ad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all by brand",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/category/10/brand/17/ad",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"10",
+								"brand",
+								"17",
+								"ad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all by model",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/category/10/brand/16/model/6/ad",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"10",
+								"brand",
+								"16",
+								"model",
+								"6",
+								"ad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single ad",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/category/10/brand/18/model/7/ad/7",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"10",
+								"brand",
+								"18",
+								"model",
+								"7",
+								"ad",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add ad",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"carBody\":\"test\",\r\n    \"fuelType\": \"test\",\r\n    \"drive\" :\"test\",\r\n    \"transmission\" :\"test\",\r\n    \"doors\" :\"test\",\r\n    \"seats\" :\"test\",\r\n    \"steeringWheelSide\" :\"test\",\r\n    \"airCondition\": \"test\",\r\n    \"damage\" :\"test\",\r\n    \"origin\" :\"test\",\r\n    \"safety\" :\"test\",\r\n    \"equipment\" :\"test\",\r\n    \"vehicleCondition\":\"test\",\r\n    \"emissionClass\" :\"test\",\r\n    \"interiorMaterial\":\"test\",\r\n    \"replacement\":\"test\",\r\n    \"title\": \"test\",\r\n    \"price\": 21545,\r\n    \"fixed\": true,\r\n    \"year\" : \"2522\",\r\n    \"mark\" : \"test\",\r\n    \"cm3\" :\"test\",\r\n    \"kw\" :\"test\",\r\n    \"ks\" :\"test\",\r\n    \"mileage\": \"test\",\r\n    \"color\" :\"test\",\r\n    \"interiorColor\" :\"test\",\r\n    \"registrationUntil\": \"test\",\r\n    \"description\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API,URL}}/api/user/17/category/10/brand/18/model/7/ad",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"17",
+								"category",
+								"10",
+								"brand",
+								"18",
+								"model",
+								"7",
+								"ad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit ad",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fixed\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API,URL}}/api/user/17/ad/6",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"17",
+								"ad",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an ad",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/user/17/ad/7",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"17",
+								"ad",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Photo",
+			"item": [
+				{
+					"name": "Upload ad photos",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file1",
+									"type": "file",
+									"src": "/C:/Users/Igor/Desktop/d96c4374a56d-800x600.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API,URL}}/api/user/17/ad/7/photo",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"17",
+								"ad",
+								"7",
+								"photo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a photo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/user/17/ad/7/photo/21",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"17",
+								"ad",
+								"7",
+								"photo",
+								"21"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API,URL",
+			"value": "http://localhost:10000",
+			"type": "string"
+		}
+	]
+}

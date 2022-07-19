@@ -85,60 +85,60 @@ class CategoryController extends BaseController {
             });
     }
 
-    // async getAllBrandsByCategoryId(req: Request, res: Response) {
-    //     const categoryId: number = +req.params?.cid;
+    async getAllBrandsByCategoryId(req: Request, res: Response) {
+        const categoryId: number = +req.params?.cid;
 
-    //     this.services.category.getById(categoryId, {
-    //         loadBrands:false,
-    //     })
-    //     .then(result => {
-    //         if (result === null) {
-    //             return res.status(404).send("Category not found!");
-    //         }
+        this.services.category.getById(categoryId, {
+            loadBrands:false,
+        })
+        .then(result => {
+            if (result === null) {
+                return res.status(404).send("Category not found!");
+            }
 
-    //         this.services.brand.getAllByCategoryId(categoryId)
-    //         .then(result => {
-    //             res.send(result);
-    //         })
-    //         .catch(error => {
-    //             res.status(500).send(error?.message);
-    //         });
-    //     })
-    //     .catch(error => {
-    //         res.status(500).send(error?.message);
-    //     });
-    // }
+            this.services.brand.getAllByCategoryId(categoryId)
+            .then(result => {
+                res.send(result);
+            })
+            .catch(error => {
+                res.status(500).send(error?.message);
+            });
+        })
+        .catch(error => {
+            res.status(500).send(error?.message);
+        });
+    }
 
-    // async getBrandById(req: Request, res: Response){
-    //     const categoryId: number = +req.params?.cid;
-    //     const brandId: number = +req.params?.bid;
+    async getBrandById(req: Request, res: Response){
+        const categoryId: number = +req.params?.cid;
+        const brandId: number = +req.params?.bid;
 
-    //     this.services.category.getById(categoryId,{
-    //         loadBrands: false,
-    //     })
-    //     .then(result => {
-    //         if(result === null){
-    //             return res.status(404).send("Category not found!");
-    //         }
+        this.services.category.getById(categoryId,{
+            loadBrands: false,
+        })
+        .then(result => {
+            if(result === null){
+                return res.status(404).send("Category not found!");
+            }
 
-    //         this.services.brand.getById(brandId, {
-    //             loadModels: true,
-    //         })
-    //             .then(result => {
-    //                 if (result === null) {
-    //                     return res.sendStatus(404);
-    //                 }
+            this.services.brand.getById(brandId, {
+                loadModels: true,
+            })
+                .then(result => {
+                    if (result === null) {
+                        return res.sendStatus(404);
+                    }
     
-    //                 res.send(result);
-    //             })
-    //             .catch(error => {
-    //                 res.status(500).send(error?.message);
-    //             });
-    //     })
-    //     .catch(error => {
-    //         res.status(500).send(error?.message);
-    //     })
-    // }
+                    res.send(result);
+                })
+                .catch(error => {
+                    res.status(500).send(error?.message);
+                });
+        })
+        .catch(error => {
+            res.status(500).send(error?.message);
+        })
+    }
 
     async addBrand(req: Request, res: Response) {
         const categoryId: number = +req.params?.cid;
@@ -210,6 +210,74 @@ class CategoryController extends BaseController {
             res.status(500).send(error?.message);
         });
 
+    }
+
+    async getModelByBrandId(req: Request, res: Response) {
+        const categoryId: number = +req.params?.cid;
+        const brandId: number = +req.params?.bid;
+
+        this.services.category.getById(categoryId, {
+            loadBrands:false,
+        })
+        .then(result => {
+            if (result === null) {
+                return res.status(404).send("Category not found!");
+            }
+            this.services.brand.getById(brandId, {loadModels:false})
+            .then(result => {
+                if (result === null) {
+                    return res.status(404).send("Category not found!");
+                }
+                this.services.model.getAllByBrandId(brandId,{})
+                    .then(result => {
+                        res.send(result);
+                    })
+                    .catch(error => {
+                        res.status(500).send(error?.message);
+                    });
+            });
+            
+        })
+        .catch(error => {
+            res.status(500).send(error?.message);
+        });
+    }
+
+    async getModelById(req: Request, res: Response) {
+        const categoryId: number = +req.params?.cid;
+        const brandId: number = +req.params?.bid;
+        const modelId: number = +req.params?.mid;
+
+        this.services.category.getById(categoryId,{
+            loadBrands: false,
+        })
+        .then(result => {
+            if(result === null){
+                return res.status(404).send("Category not found!");
+            }
+            this.services.brand.getById(brandId,{
+                loadModels: false,
+            })
+            .then(result => {
+                if(result === null){
+                    return res.status(404).send("Brand not found!");
+                }
+                this.services.model.getById(modelId, {})
+                    .then(result => {
+                        if (result === null) {
+                            return res.sendStatus(404);
+                        }
+        
+                        res.send(result);
+                    })
+                    .catch(error => {
+                        res.status(500).send(error?.message);
+                    });
+            })
+        })
+        .catch(error => {
+            res.status(500).send(error?.message);
+        })
     }
 
     async addModel(req: Request, res: Response) {

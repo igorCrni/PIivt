@@ -164,6 +164,47 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get brands by category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/category/10/brand",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"10",
+								"brand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get single brand",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/category/10/brand/18",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"10",
+								"brand",
+								"18"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -228,6 +269,51 @@
 								"17",
 								"model",
 								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get model by brand",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/category/10/brand/18/model",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"10",
+								"brand",
+								"18",
+								"model"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get single model",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API,URL}}/api/category/10/brand/18/model/9",
+							"host": [
+								"{{API,URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"10",
+								"brand",
+								"18",
+								"model",
+								"9"
 							]
 						}
 					},

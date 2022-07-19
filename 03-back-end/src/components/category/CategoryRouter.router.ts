@@ -15,9 +15,13 @@ class CategoryRouter implements IRouter{
         application.post("/api/category",               categoryController.add.bind(categoryController));
         application.put("/api/category/:cid",           categoryController.edit.bind(categoryController));
         //brand
-        application.post("/api/category/:cid/brand",    categoryController.addBrand.bind(categoryController));
-        application.put("/api/category/:cid/brand/:bid", categoryController.editBrand.bind(categoryController));
+        application.get("/api/category/:cid/brand",          categoryController.getAllBrandsByCategoryId.bind(categoryController));
+        application.get("/api/category/:cid/brand/:bid",     categoryController.getBrandById.bind(categoryController));
+        application.post("/api/category/:cid/brand",         categoryController.addBrand.bind(categoryController));
+        application.put("/api/category/:cid/brand/:bid",     categoryController.editBrand.bind(categoryController));
         //model
+        application.get("/api/category/:cid/brand/:bid/model",          categoryController.getModelByBrandId.bind(categoryController));
+        application.get("/api/category/:cid/brand/:bid/model/:mid",          categoryController.getModelById.bind(categoryController));
         application.post("/api/category/:cid/brand/:bid/model",    categoryController.addModel.bind(categoryController));
         application.put("/api/category/:cid/brand/:bid/model/:mid", categoryController.editModel.bind(categoryController));
         //ad

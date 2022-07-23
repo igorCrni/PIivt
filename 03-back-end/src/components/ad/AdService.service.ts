@@ -70,6 +70,10 @@ export default class AdService extends BaseService<AdModel, IAdAdapterOptions> {
         return this.getAllByFieldNameAndValue("category_id", categoryId, DefaultAdAdapterOptions);
     }
 
+    async getAllByUserId(userId: number,){
+        return this.getAllByFieldNameAndValue("user_id", userId, DefaultAdAdapterOptions);
+    }
+
     async getAllByBrandId(brandId:number,){
         return this.getAllByFieldNameAndValue("brand_id", brandId, DefaultAdAdapterOptions);
     }

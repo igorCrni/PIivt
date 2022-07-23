@@ -11,8 +11,10 @@ export default interface IEditUser extends IServiceData {
     is_active?: number;
     forename?: string;
     surname?: string;
+    city?:string;
     phone_number?: string;
     activation_code?: string;
+    
     
 }
 
@@ -21,16 +23,13 @@ export interface IEditUserDto {
     isActive?: boolean;
     forename?: string;
     surname?: string;
+    city?:string;
     phoneNumber?: string;
 }
 
 const EditUserValidator = ajv.compile({
     type: "object",
     properties: {
-        email: {
-            type: "string",
-            format: "email",
-        },
         password: {
             type: "string",
             pattern: "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,}$",
@@ -54,6 +53,9 @@ const EditUserValidator = ajv.compile({
             type: "string",
             minLength: 0,
             maxLength: 24,
+        },
+        isActive: {
+            type:"boolean"
         }
     },
     required: [

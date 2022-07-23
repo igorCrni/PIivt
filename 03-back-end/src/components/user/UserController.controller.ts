@@ -260,6 +260,10 @@ export default class UserController extends BaseController {
             serviceData.phone_number= data.phoneNumber;
         }
 
+        if(data.city !== undefined) {
+            serviceData.city= data.city;
+        }
+
         this.services.user.edit(id, serviceData)
         .then(result => {
             res.send(result);

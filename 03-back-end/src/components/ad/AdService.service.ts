@@ -114,6 +114,22 @@ export default class AdService extends BaseService<AdModel, IAdAdapterOptions> {
             });
         })
     }
+
+    async deleteAdEquipment(data: IAdEquipment): Promise<number> {
+        return new Promise((resolve, reject) => {
+            const sql: string = "DELETE FROM ad_equipment WHERE ad_id = ? AND equipment_id = ?;";
+
+            this.db.execute(sql, [ data.ad_id, data.equipment_id ])
+            .then(async result => {
+                const info: any = result;
+                resolve(+(info[0]?.affectedRows));
+            })
+            .catch(error => {
+                reject(error);
+            });
+        })
+    }
+
     async addAdSafety(data:IAdSafety): Promise<number> {
         return new Promise((resolve, reject) => {
             const sql: string = "INSERT ad_safety SET ad_id = ?, safety_id = ?;";
@@ -128,6 +144,22 @@ export default class AdService extends BaseService<AdModel, IAdAdapterOptions> {
             });
         })
     }
+
+    async deleteAdSafety(data: IAdSafety): Promise<number> {
+        return new Promise((resolve, reject) => {
+            const sql: string = "DELETE FROM ad_safety WHERE ad_id = ? AND safety_id = ?;";
+
+            this.db.execute(sql, [ data.ad_id, data.safety_id ])
+            .then(async result => {
+                const info: any = result;
+                resolve(+(info[0]?.affectedRows));
+            })
+            .catch(error => {
+                reject(error);
+            });
+        })
+    }
+
     async addAdVehicleCondition(data:IAdVehicleCondition): Promise<number> {
         return new Promise((resolve, reject) => {
             const sql: string = "INSERT ad_vehicle_condition SET ad_id = ?, vehicle_condition_id = ?;";
@@ -143,18 +175,35 @@ export default class AdService extends BaseService<AdModel, IAdAdapterOptions> {
         })
     }
 
+    async deleteAdVehicleCondition(data: IAdVehicleCondition): Promise<number> {
+        return new Promise((resolve, reject) => {
+            const sql: string = "DELETE FROM ad_vehicle_condition WHERE ad_id = ? AND vehicle_condition_id = ?;";
+
+            this.db.execute(sql, [ data.ad_id, data.vehicle_condition_id ])
+            .then(async result => {
+                const info: any = result;
+                resolve(+(info[0]?.affectedRows));
+            })
+            .catch(error => {
+                reject(error);
+            });
+        })
+    }
+
     public async editById(adId: number, data: IEditAd, options: IAdAdapterOptions):Promise <AdModel> {
         return this.baseEditById(adId, data, options);
     }
 
     async deleteById(adId: number): Promise<{ filesToDelete: string[] }> {
         return new Promise(resolve => {
-            this.services.ad.getById(adId,DefaultAdAdapterOptions)
-            .then(() => this.getById(adId, {
-                loadPhotos: true,
-                loadEquipments: false,
-                loadSafety: false,
-                loadVehicleCondition: false
+            this.deleteAllAdEquipmentByAdId(adId)
+            .then(()=> this.deleteAllAdSafetyByAdId(adId))
+            .then(()=> this.deleteAllAdVehicleConditionByAdId(adId))
+            .then(()=> this.getById(adId, {
+                loadEquipments:false,
+                loadPhotos:true,
+                loadSafety:false,
+                loadVehicleCondition:false,
             }))
             .then(ad => {
                 if (ad === null) throw { status: 404, message: "Ad not found!" }
@@ -181,6 +230,49 @@ export default class AdService extends BaseService<AdModel, IAdAdapterOptions> {
             .catch(error => {
                 throw {
                     message: error?.message ?? "Could not delete this ad!",
+                }
+            });
+        })
+    }
+
+    private async deleteAllAdEquipmentByAdId(adId: number): Promise<true> {
+        return new Promise(resolve => {
+            const sql = `DELETE FROM ad_equipment WHERE ad_id = ?;`;
+            this.db.execute(sql, [ adId ])
+            .then(() => {
+                resolve(true);
+            })
+            .catch(error => {
+                throw {
+                    message: error?.message ?? "Could not delete ad equipments!",
+                }
+            });
+        })
+    }
+    private async deleteAllAdSafetyByAdId(adId: number): Promise<true> {
+        return new Promise(resolve => {
+            const sql = `DELETE FROM ad_safety WHERE ad_id = ?;`;
+            this.db.execute(sql, [ adId ])
+            .then(() => {
+                resolve(true);
+            })
+            .catch(error => {
+                throw {
+                    message: error?.message ?? "Could not delete ad safety!",
+                }
+            });
+        })
+    }
+    private async deleteAllAdVehicleConditionByAdId(adId: number): Promise<true> {
+        return new Promise(resolve => {
+            const sql = `DELETE FROM ad_vehicle_condition WHERE ad_id = ?;`;
+            this.db.execute(sql, [ adId ])
+            .then(() => {
+                resolve(true);
+            })
+            .catch(error => {
+                throw {
+                    message: error?.message ?? "Could not delete ad vehicle conditions!",
                 }
             });
         })

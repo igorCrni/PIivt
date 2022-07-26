@@ -4,151 +4,127 @@ import IServiceData from "../../../common/IServiceData.interface";
 const ajv = new Ajv();
 
 export default interface IEditAd extends IServiceData {
-    car_body?: string;
-    fuel_type?: string;
-    drive?: string;
-    transmission?: string;
-    doors?: string;
-    seats?: string;
-    steering_wheel_side?: string;
-    air_condition?: string;
-    damage?: string;
-    origin?: string;
-    safety?: string;
-    equipment?: string;
-    vehicle_condition?: string;
-    emission_class?: string;
-    interior_material?: string;
-    replacement?: string;
-    title?: string;
-    price?: number;
-    fixed?: boolean;
-    year?: string;
-    mark?: string;
-    cm3?: string;
-    kw?: string;
-    ks?: string;
-    mileage?:string;
-    color?: string;
-    interior_color?: string;
-    registration_until?: string;
-    description?: string;
+    carBodyId: number;
+    fuelTypeId: number;
+    driveId: number;
+    transmissionId: number;
+    doorsId: number;
+    seatsId: number;
+    steeringWheelSideId: number;
+    airConditionId:number;
+    damageId:number;
+    originId: number;
+    safetyIds: number[];
+    equipmentIds: number[];
+    vehicleConditionIds: number[];
+    emissionClassId: number;
+    interiorMaterialId: number;
+    replacementId: number;
+    title: string;
+    price: number;
+    year: string;
+    cm3: string;
+    kw: string;
+    ks: string;
+    mileage:string;
+    color: string;
+    interiorColor: string;
+    registrationUntil: string;
+    description: string;
 }
 export interface IEditAdDto {
-    carBody?: string;
-    fuelType?: String;
-    drive?: string;
-    transmissio?: string;
-    doors?: string;
-    seats?: string;
-    steeringWheelSide?: string;
-    airCondition?: string;
-    damage?: string;
-    origin?: string;
-    safety?: string;
-    equipment?: string;
-    vehicleCondition?: string;
-    emissionClass?: string;
-    interiorMaterial?: string;
-    replacement?: string;
-    title?: string;
-    price?: number;
-    fixed?: number;
-    year?: number;
-    mark?: string;
-    cm3?: string;
-    kw?: string;
-    ks?: string;
-    mileage?:string;
-    color?: string;
-    interiorColor?: string;
-    registrationUnitl?: string;
-    description?: string;
+    car_body_id: number;
+    fuel_type_id: number;
+    drive_id: number;
+    transmission_id: number;
+    doors_id: number;
+    seats_id: number;
+    steering_wheel_side_id: number;
+    air_condition_id: number;
+    damage_id: number;
+    origin_id: number;
+    emission_class_id: number;
+    interior_material_id: number;
+    replacement_id: number;
+    title: string;
+    price: number;
+    year: string;
+    cm3: string;
+    kw: string;
+    ks: string;
+    mileage:string;
+    color: string;
+    interior_color: string;
+    registration_until: string;
+    description: string;
 }
 
 
 const EditAdValidator = ajv.compile({
     type: "object",
     properties: {
-        carBody: {
-            type: "string",
-            minLength: 4,
-            maxLength: 125,
+        carBodyId: {
+            type: "integer",
         },
-        fuelType: {
-            type: "string",
-            minLength: 4,
-            maxLength: 125,
+        fuelTypeId: {
+            type: "integer",
         },
-        drive: {
-            type: "string",
-            minLength: 4,
-            maxLength: 125,
+        driveId: {
+            type: "integer",
         },
-        transmission: {
-            type: "string",
-            minLength: 4,
-            maxLength: 125,
+        transmissionId: {
+            type: "integer",
         },
-        doors: {
-            type: "string",
-            minLength: 4,
-            maxLength: 125,
+        doorsId: {
+            type: "integer",
         },
-        seats: {
-            type: "string",
-            minLength: 4,
-            maxLength: 125,
+        seatsId: {
+            type: "integer",
         },
-        steeringWheelSide: {
-            type: "string",
-            minLength: 4,
-            maxLength: 125,
+        steeringWheelSideId: {
+            type: "integer",
         },
-        airCondition: {
-            type: "string",
-            minLength: 4,
-            maxLength: 125,
+        airConditionId: {
+            type: "integer",
         },
-        damage: {
-            type: "string",
-            minLength: 4,
-            maxLength: 125,
+        damageId: {
+            type: "integer",
         },
-        origin: {
-            type: "string",
-            minLength: 4,
-            maxLength: 125,
+        originId: {
+            type: "integer",
         },
-        safety: {
-            type: "string",
-            minLength: 0,
-            maxLength: 500,
+        equipmentIds: {
+            type: "array",
+            minItems: 0,
+            uniqueItems: true,
+            items: {
+                type: "integer",
+            },
         },
-        equipment: {
-            type: "string",
-            minLength: 0,
-            maxLength: 500,
+        safetyIds: {
+            type: "array",
+            minItems: 0,
+            uniqueItems: true,
+            items: {
+                type: "integer",
+            },
         },
-        vehicleCondition: {
-            type: "string",
-            minLength: 4,
-            maxLength: 125,
+        vehicleConditionIds: {
+            type: "array",
+            minItems: 0,
+            uniqueItems: true,
+            items: {
+                type: "integer",
+            },
         },
-        emissionClass: {
-            type: "string",
-            minLength: 4,
-            maxLength: 125,
+        emissionClassId: {
+            type: "integer",
         },
-        interiorMaterial: {
-            type: "string",
-            minLength: 4,
-            maxLength: 125,
+        interiorMaterialId: {
+            type: "integer",
         },
-        replacement: {
-            type: "string",
-            minLength: 4,
-            maxLength: 125,
+        replacementId: {
+            type: "integer",
         },
         title: {
             type: "string",
@@ -160,18 +136,10 @@ const EditAdValidator = ajv.compile({
             multipleOf: 0.01,
             minimum: 0.01,
         },
-        fixed: {
-            type: "boolean",
-        },
         year: {
             type: "string",
             minLength: 1,
             maxLength: 4,
-        },
-        mark: {
-            type: "string",
-            minLength: 4,
-            maxLength: 64,
         },
         cm3: {
             type: "string",
@@ -203,9 +171,9 @@ const EditAdValidator = ajv.compile({
             minLength: 1,
             maxLength: 25,
         },
-        registrationUnitl: {
+        registrationUntil: {
             type: "string",
-            minLength: 1,
+            minLength: 0,
             maxLength: 12,
         },
         description: {
@@ -215,7 +183,25 @@ const EditAdValidator = ajv.compile({
         },
     },
     required: [
-        
+        "carBodyId",
+        "fuelTypeId",
+        "driveId",
+        "transmissionId",
+        "doorsId",
+        "seatsId",
+        "steeringWheelSideId",
+        "airConditionId",
+        "damageId",
+        "originId",
+        "emissionClassId",
+        "title",
+        "price",
+        "year",
+        "cm3",
+        "kw",
+        "ks",
+        "mileage",
+        "color",
     ],
     additionalProperties: false,
 });

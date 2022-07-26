@@ -15,6 +15,8 @@ import { IUserAdapterOptions, DefaultUserAdapterOptions } from '../user/UserServ
 import IEditAdDto, { EditAdValidator } from './dto/IEditAd.dto';
 import { DefaultCategoryAdapterOptions } from '../category/CategoryService.service';
 import { DefaultAdAdapterOptions } from './AdService.service';
+import UserModel from '../../../dist/components/user/UserModel.model';
+import AdModel from './AdModel.model';
 
 export default class AdController extends BaseController{
 
@@ -160,63 +162,35 @@ export default class AdController extends BaseController{
     }
 
     async getAdById(req: Request, res: Response){
-        const categoryId:number = +req.params?.cid;
-        const brandId: number = +req.params?.bid;
-        const modelId: number = +req.params?.mid;
+        const userId: number = +req.params?.uid;
         const adId: number = +req.params?.aid;
 
-        this.services.category.getById(categoryId, {
-            loadBrands:false,
-        })
+        this.services.user.getById(userId,DefaultUserAdapterOptions)
         .then(result => {
-            if (result === null) {
-                return res.status(404).send("Category not found!");
+            if(result === null){
+                return res.status(404).send("User not found!");
             }
 
-            this.services.brand.getById(brandId,{
-                loadModels:false,
+            this.services.ad.getById(adId, {
+                loadEquipments: true,
+                loadPhotos:true,
+                loadSafety:true,
+                loadVehicleCondition:true,
             })
-            .then(result => {
-                if (result === null) {
-                    return res.status(404).send("Brand not found!");
-                }
-                this.services.model.getById(modelId,{})
-                .then(reuslt => {
-
-                    if(reuslt === null) {
-                        return res.status(404).send("Model not found!");
+                .then(result => {
+                    if (result === null) {
+                        return res.sendStatus(404).send("Ad not found");
                     }
-                    this.services.ad.getById(adId, {
-                        loadPhotos: true,
-                        loadEquipments: true,
-                        loadSafety: true,
-                        loadVehicleCondition: true,
-                    })
-                    .then(result => {
-                        if(result === null){
-                            return res.status(404).send("Ad not found!");
-                        }
-                        if(result.categoryId !== categoryId){
-                            return res.status(404).send("Ad not found in this category!");
-                        }
-                        if(result.brandId !== brandId){
-                            return res.status(404).send("Ad not found for this brand!");
-                        }
-                        if(result.modelId !== modelId){
-                            return res.status(404).send("Ad not found for this model!");
-                        }
-
-                        res.send(result);
-                    })
-                    .catch(error => {
-                        res.status(500).send(error?.message);
-                    });
+    
+                    res.send(result);
                 })
-            })
+                .catch(error => {
+                    res.status(500).send(error?.message);
+                });
         })
         .catch(error => {
             res.status(500).send(error?.message);
-        });
+        })
     }
 
     async add(req:Request, res:Response) {
@@ -366,52 +340,211 @@ export default class AdController extends BaseController{
 
     async editAd(req: Request, res: Response) {
         const userId: number = +req.params?.uid;
-        const adId: number = +req.params?.aid;
+        // const adId: number = +req.params?.aid;
         const data = req.body as IEditAdDto;
 
-        if(!EditAdValidator(data)) {
+        if (!EditAdValidator(data)) {
             return res.status(400).send(EditAdValidator.errors);
         }
 
-        this.services.user.getById(userId, {
-            removePassword: false,
-            removeActivationCode: false,
-        })
-        .then(result =>{
-            if(result === null) {
-                return res.status(404).send('User not found!');
+        this.services.user.getById(userId,DefaultUserAdapterOptions)
+        .then(result => {
+            if (result === null) {
+                throw {
+                    status: 404,
+                    message: "User not found!"
+                };
             }
 
-            this.services.ad.getById(adId, { 
-                loadPhotos: false,
-                loadEquipments: false,
-                loadSafety: false,
-                loadVehicleCondition: false,
-            })
-            .then(result =>{
-                if(result === null) {
-                    return res.status(404).send('Ad not found!');
-                }
-
-                if (result.userId !== userId) {
-                    return res.status(404).send('This ad does not belong to this user!');
-                }
-
-                this.services.ad.editById(adId, data, {
-                    loadPhotos:false,
-                    loadEquipments: false,
-                    loadSafety: false,
-                    loadVehicleCondition: false,
-                })
-                .then(result =>{
-                    res.send(result);
-                })
-            });
+            return result as UserModel;
         })
-        .catch(error =>{
-            res.status(500).send(error?.message);
+        .then(async user => {
+            const adId: number = +req.params?.aid;
+
+            return this.retrieveAd(user, adId);
+        })
+        .then(this.checkAd)
+        .then(async result => {
+            await this.services.ad.startTransaction();
+            return result;
+        })
+        .then(async result => {
+            const currentEquipmentIds  = result.ad.equipments?.map(equipment => equipment.equipmentId);
+            const newEquipmentIds      = data.equipmentIds;
+
+            const availableEquipmentIds = result.ad.equipments?.map(a => a.equipmentId);
+
+            for (let id of data.equipmentIds) {
+                if (!availableEquipmentIds.includes(id)) {
+                    throw {
+                        status: 400,
+                        message: "Equipment " + id + " is not available for ad!",
+                    }
+                }
+            }
+
+            const equipmentIdsToAdd = newEquipmentIds.filter(id => !currentEquipmentIds.includes(id));
+            for (let id of equipmentIdsToAdd) {
+                if (!await this.services.ad.addAdEquipment({
+                    ad_id: result.ad.adId,
+                    equipment_id: id,
+                })) {
+                    throw {
+                        status: 500,
+                        message: "Error adding a new equipment to this ad!"
+                    }
+                };
+            }
+
+            const equipmentIdsToDelete = currentEquipmentIds.filter(id => !newEquipmentIds.includes(id));
+            for (let id of equipmentIdsToDelete) {
+                if (!await this.services.ad.deleteAdEquipment({
+                    ad_id: result.ad.adId,
+                    equipment_id: id,
+                })) {
+                    throw {
+                        status: 500,
+                        message: "Error delete an existing equipment from this ad!"
+                    }
+                }
+            }
+
+            return result;
+        })
+        .then(async result => {
+            const currentSafetyIds  = result.ad.safeties?.map(safety => safety.safetyId);
+            const newSafetyIds      = data.safetyIds;
+
+            const availableSafetyIds = result.ad.safeties?.map(a => a.safetyId);
+
+            for (let id of data.safetyIds) {
+                if (!availableSafetyIds.includes(id)) {
+                    throw {
+                        status: 400,
+                        message: "safety " + id + " is not available for ad!",
+                    }
+                }
+            }
+
+            const safetyIdsToAdd = newSafetyIds.filter(id => !currentSafetyIds.includes(id));
+            for (let id of safetyIdsToAdd) {
+                if (!await this.services.ad.addAdSafety({
+                    ad_id: result.ad.adId,
+                    safety_id: id,
+                })) {
+                    throw {
+                        status: 500,
+                        message: "Error adding a new safety to this ad!"
+                    }
+                };
+            }
+
+            const safetyIdsToDelete = currentSafetyIds.filter(id => !newSafetyIds.includes(id));
+            for (let id of safetyIdsToDelete) {
+                if (!await this.services.ad.deleteAdSafety({
+                    ad_id: result.ad.adId,
+                    safety_id: id,
+                })) {
+                    throw {
+                        status: 500,
+                        message: "Error delete an existing safety from this ad!"
+                    }
+                }
+            }
+
+            return result;
+        })
+        .then(async result => {
+            const currentVehicleConditionIds  = result.ad.vehicleConditions?.map(vehicleCondition => vehicleCondition.vehicleConditionId);
+            const newVehicleConditionIds      = data.vehicleConditionIds;
+
+            const availableVehicleConditionIds = result.ad.vehicleConditions?.map(a => a.vehicleConditionId);
+
+            for (let id of data.vehicleConditionIds) {
+                if (!availableVehicleConditionIds.includes(id)) {
+                    throw {
+                        status: 400,
+                        message: "Vehicle condition " + id + " is not available for ad!",
+                    }
+                }
+            }
+
+            const vehicleConditionIdsToAdd = newVehicleConditionIds.filter(id => !currentVehicleConditionIds.includes(id));
+            for (let id of vehicleConditionIdsToAdd) {
+                if (!await this.services.ad.addAdVehicleCondition({
+                    ad_id: result.ad.adId,
+                    vehicle_condition_id: id,
+                })) {
+                    throw {
+                        status: 500,
+                        message: "Error adding a new vehicle condition to this ad!"
+                    }
+                };
+            }
+
+            const vehicleConditionIdsToDelete = currentVehicleConditionIds.filter(id => !newVehicleConditionIds.includes(id));
+            for (let id of vehicleConditionIdsToDelete) {
+                if (!await this.services.ad.deleteAdVehicleCondition({
+                    ad_id: result.ad.adId,
+                    vehicle_condition_id: id,
+                })) {
+                    throw {
+                        status: 500,
+                        message: "Error delete an existing vehicle condition from this ad!"
+                    }
+                }
+            }
+
+            return result;
+        })
+        .then(async result => {
+            await this.services.ad.commitChanges();
+
+            res.send(
+                await this.services.ad.getById(result.ad.adId, {
+                    loadEquipments: true,
+                    loadSafety: true,
+                    loadVehicleCondition: true,
+                    loadPhotos: true,
+                })
+            );
+        })
+        .catch(async error => {
+            await this.services.ad.rollbackChanges();
+
+            res.status(error?.status ?? 500).send(error?.message);
         });
 
+    }
+
+    private async retrieveAd(user: UserModel, adId: number): Promise<{ user: UserModel, ad: AdModel|null }> {
+        return {
+            user: user,
+            ad: await this.services.ad.getById(adId, {
+                loadEquipments: true,
+                loadSafety: true,
+                loadVehicleCondition: false,
+                loadPhotos: false,
+            })
+        }
+    }
+
+    private checkAd(result: { user: UserModel, ad: AdModel|null }): { user: UserModel, ad: AdModel } {
+        if (result.ad === null) {
+            throw {
+                status: 404,
+                message: "Ad not found!"
+            };
+        }
+
+        if (result.ad.userId !== result.user.userId) {
+            throw {
+                status: 404,
+                message: "Ad not found for this user!"
+            };
+        }
+
+        return result;
     }
 
     async uploadPhoto(req: Request, res: Response) {
@@ -581,7 +714,6 @@ export default class AdController extends BaseController{
         .toFile(config.server.static.path + "/" + directory + resizeOptions.prefix + filename);
     }
 
-    
     async deletePhoto(req: Request, res: Response) {
         const userId: number = +(req.params?.uid);
         const adId: number = +(req.params?.aid);

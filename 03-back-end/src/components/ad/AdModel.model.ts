@@ -1,6 +1,9 @@
 import { LargeNumberLike } from "crypto";
 import IModel from "../../common/IModel.inteface";
 import PhotoModel from '../photo/PhotoModel.model';
+import EquipmentModel from '../../../dist/components/equipment/EquipmentModel.model';
+import SafetyModel from '../../../dist/components/safety/SafetyModel.model';
+import VehicleConditionModel from '../../../dist/components/vehicleCondition/VehicleConditionModel.model';
 
 export default class AdModel implements IModel {
 
@@ -23,9 +26,7 @@ export default class AdModel implements IModel {
     replacement: string;
     title: string;
     price: number;
-    fixed: boolean;
     year: string;
-    mark: string;
     cm3: string;
     kw: string;
     ks: string;
@@ -41,8 +42,8 @@ export default class AdModel implements IModel {
     modelId: number;
     userId: number;
 
-    // category?: CategoryModel = null;
-    // brand?: BrandModel[];
-    // model?: ModelModel[];
+    vehicleConditions?: VehicleConditionModel[] = [];
+    safeties? : SafetyModel[] = [];
+    equipments? : EquipmentModel[] = [];
     photos?: PhotoModel[] = [];
 }

@@ -29,7 +29,12 @@ export default class AdController extends BaseController{
                 return res.status(404).send("Category not found!");
             }
 
-            this.services.ad.getAllByCategoryId(categoryId)
+            this.services.ad.getAllByCategoryId(categoryId, {
+                loadEquipments: true,
+                loadPhotos: true,
+                loadSafety: true,
+                loadVehicleCondition: true,
+            })
             .then(result => {
                 res.send(result);
             })
@@ -41,6 +46,7 @@ export default class AdController extends BaseController{
             res.status(500).send(error?.message);
         });
     }
+
     async getAllAdByBrandId(req: Request, res: Response) {
         const categoryId: number = +req.params?.cid;
         const brandId: number = +req.params?.bid;
@@ -61,7 +67,12 @@ export default class AdController extends BaseController{
                     return res.status(404).send("Brand not found!");
                 }
 
-                this.services.ad.getAllByBrandId(brandId)
+                this.services.ad.getAllByBrandId(brandId,{
+                    loadEquipments: true,
+                    loadPhotos: true,
+                    loadSafety: true,
+                    loadVehicleCondition: true,
+                })
                 .then(result => {
                     res.send(result);
                 })
@@ -101,7 +112,12 @@ export default class AdController extends BaseController{
                     if (result === null) {
                         return res.status(404).send("Model not found!");
                     }
-                    this.services.ad.getAllByModelId(modelId)
+                    this.services.ad.getAllByModelId(modelId,{
+                        loadEquipments: true,
+                        loadPhotos: true,
+                        loadSafety: true,
+                        loadVehicleCondition: true,
+                    })
                     .then(result => {
                         res.send(result);
                     })
@@ -125,7 +141,12 @@ export default class AdController extends BaseController{
                 return res.status(404).send("User not found!");
             }
 
-            this.services.ad.getAllByUserId(userId)
+            this.services.ad.getAllByUserId(userId, {
+                loadEquipments: true,
+                loadPhotos: true,
+                loadSafety: true,
+                loadVehicleCondition: true,
+            })
             .then(result => {
                 res.send(result);
             })
@@ -167,6 +188,9 @@ export default class AdController extends BaseController{
                     }
                     this.services.ad.getById(adId, {
                         loadPhotos: true,
+                        loadEquipments: true,
+                        loadSafety: true,
+                        loadVehicleCondition: true,
                     })
                     .then(result => {
                         if(result === null){
@@ -248,37 +272,87 @@ export default class AdController extends BaseController{
                 brand_id: brandId,
                 model_id: modelId,
                 user_id: userId,
-                car_body: data.carBody,
-                fuel_type: data.fuelType,
-                drive: data.drive,
-                transmission: data.transmission,
-                doors: data.doors,
-                seats: data.seats,
-                steering_wheel_side: data.steeringWheelSide,
-                air_condition: data.airCondition,
-                damage: data.damage,
-                origin: data.origin,
-                safety: data.safety,
-                equipment: data.equipment,
-                vehicle_condition: data.vehicleCondition,
-                emission_class: data.emissionClass,
-                interior_color: data.interiorMaterial,
-                replacement: data.replacement,
+                car_body_id: data.carBodyId,
+                fuel_type_id: data.fuelTypeId,
+                drive_id: data.driveId,
+                transmission_id: data.transmissionId,
+                doors_id: data.doorsId,
+                seats_id: data.seatsId,
+                steering_wheel_side_id: data.steeringWheelSideId,
+                air_condition_id: data.airConditionId,
+                damage_id: data.damageId,
+                origin_id: data.originId,
+                emission_class_id: data.emissionClassId,
+                interior_material_id: data.interiorMaterialId,
+                replacement_id: data.replacementId,
                 title: data.title,
                 price: data.price,
-                fixed: data.fixed,
                 year: data.year,
-                mark: data.mark,
                 cm3: data.cm3,
                 kw: data.kw,
                 ks: data.ks,
                 mileage:data.mileage,
                 color: data.color,
-                interior_material: data.interiorColor,
+                interior_color: data.interiorColor,
                 registration_until: data.registrationUntil,
                 description: data.description
 
             });
+        })
+        .then(newAd => {
+            for (let givenEquipmentId of data.equipmentIds){
+                this.services.ad.addAdEquipment({
+                    ad_id: newAd.adId,
+                    equipment_id: givenEquipmentId,
+                })
+                .catch(error => {
+                    throw {
+                        status: 500,
+                        message: error?.message
+                    }
+                });
+            }
+            
+            return newAd;
+        })
+        .then(newAd => {
+            for (let givenSafetyId of data.safetyIds){
+                this.services.ad.addAdSafety({
+                    ad_id: newAd.adId,
+                    safety_id: givenSafetyId,
+                })
+                .catch(error => {
+                    throw {
+                        status: 500,
+                        message: error?.message
+                    }
+                });
+            }
+            return newAd;
+        })
+        .then(newAd => {
+            for (let givenVehicleConditionId of data.vehicleConditionIds){
+                this.services.ad.addAdVehicleCondition({
+                    ad_id: newAd.adId,
+                    vehicle_condition_id: givenVehicleConditionId,
+                })
+                .catch(error => {
+                    throw {
+                        status: 500,
+                        message: error?.message
+                    }
+                });
+            }
+
+            return newAd;
+        })
+        .then(newAd => {
+            return this.services.ad.getById(newAd.adId,{
+                loadPhotos:false,
+                loadEquipments: false,
+                loadSafety: false,
+                loadVehicleCondition: false,
+            })
         })
         .then(async result => {
             await this.services.ad.commitChanges();
@@ -308,7 +382,12 @@ export default class AdController extends BaseController{
                 return res.status(404).send('User not found!');
             }
 
-            this.services.ad.getById(adId, { loadPhotos: false})
+            this.services.ad.getById(adId, { 
+                loadPhotos: false,
+                loadEquipments: false,
+                loadSafety: false,
+                loadVehicleCondition: false,
+            })
             .then(result =>{
                 if(result === null) {
                     return res.status(404).send('Ad not found!');
@@ -318,7 +397,12 @@ export default class AdController extends BaseController{
                     return res.status(404).send('This ad does not belong to this user!');
                 }
 
-                this.services.ad.editById(adId, data, {loadPhotos:false})
+                this.services.ad.editById(adId, data, {
+                    loadPhotos:false,
+                    loadEquipments: false,
+                    loadSafety: false,
+                    loadVehicleCondition: false,
+                })
                 .then(result =>{
                     res.send(result);
                 })
@@ -344,7 +428,12 @@ export default class AdController extends BaseController{
             return result;
         })
         .then(() => {
-            return this.services.ad.getById(adId, {loadPhotos: false,});
+            return this.services.ad.getById(adId, {
+                loadPhotos:false,
+                loadEquipments: false,
+                loadSafety: false,
+                loadVehicleCondition: false,
+            });
         })
         .then(result => {
             if (result === null) throw {
@@ -492,7 +581,7 @@ export default class AdController extends BaseController{
         .toFile(config.server.static.path + "/" + directory + resizeOptions.prefix + filename);
     }
 
-    //ne brise photo
+    
     async deletePhoto(req: Request, res: Response) {
         const userId: number = +(req.params?.uid);
         const adId: number = +(req.params?.aid);
@@ -508,6 +597,9 @@ export default class AdController extends BaseController{
                 user: user,
                 ad: await this.services.ad.getById(adId, {
                     loadPhotos: true,
+                    loadEquipments: false,
+                    loadSafety: false,
+                    loadVehicleCondition: false,
                 }),
             };
         })

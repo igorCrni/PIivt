@@ -16,6 +16,7 @@ import VehicleConditionRouter from './components/vehicleCondition/VehicleConditi
 import EmissionClassRouter from './components/emissionClass/EmissionClassRouter.router';
 import InteriorMaterialRouter from './components/interiorMaterial/InteriorMaterialRouter.router';
 import ReplacementRouter from './components/replacement/ReplacementRouter.router';
+import CarBodyRouter from './components/carBody/CarBodyRouter.router';
 
 const ApplicationtRouters =  [
     new CategoryRouter(),
@@ -36,6 +37,7 @@ const ApplicationtRouters =  [
     new EmissionClassRouter(),
     new InteriorMaterialRouter(),
     new ReplacementRouter(),
+    new CarBodyRouter(),
 ];
 
 export default ApplicationtRouters;

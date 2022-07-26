@@ -1,3 +1,4 @@
+/* eslint-disable no-throw-literal */
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ICategory from '../../models/ICategory.model';
@@ -8,7 +9,7 @@ export default function CategoryList() {
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
-        api("get", "/api/category",)
+        api("get", "/api/category","user")
         .then(apiResonse => {
             if(apiResonse.status === "ok") {
                 return setCategories(apiResonse.data);

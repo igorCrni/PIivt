@@ -14,7 +14,7 @@ class SteeringWheelSideService extends BaseService<SteeringWheelSideModel, Steer
     protected async adaptToModel(data: any): Promise<SteeringWheelSideModel> {
         const steeringWheelSide: SteeringWheelSideModel = new SteeringWheelSideModel();
 
-        steeringWheelSide.steeringWheelSideID = +data?.steering_wheel_side_id;
+        steeringWheelSide.steeringWheelSideId = +data?.steering_wheel_side_id;
         steeringWheelSide.name = data?.name;
 
         return steeringWheelSide;

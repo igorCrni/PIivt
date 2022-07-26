@@ -20,6 +20,7 @@ import VehicleConditionRouter from './components/vehicleCondition/VehicleConditi
 import EmissionClassRouter from './components/emissionClass/EmissionClassRouter.router';
 import InteriorMaterialRouter from "./components/interiorMaterial/InteriorMaterialRouter.router";
 import ReplacementRouter from './components/replacement/ReplacementRouter.router';
+import CarBodyRouter from './components/carBody/CarBodyRouter.router';
 
 const DevConfig: IConfig = {
     server: {
@@ -68,6 +69,7 @@ const DevConfig: IConfig = {
         new EmissionClassRouter(),
         new InteriorMaterialRouter(),
         new ReplacementRouter(),
+        new CarBodyRouter(),
     ],
 
     mail: {
@@ -113,7 +115,7 @@ const DevConfig: IConfig = {
                 max:1920,
             },
             height: {
-                min:240,
+                min:153,
                 max:1080,
             },
             resize: [

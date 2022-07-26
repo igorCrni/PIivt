@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-throw-literal */
 import { useState, useEffect } from 'react';
 import ICategory from '../../models/ICategory.model';
 import { useParams } from 'react-router-dom';
-import BrandPreview from '../Ad/BrandPreview';
 import IBrand from '../../models/IBrand.model';
 import { api } from '../../api/api';
+import BrandPreview from '../Brand/BrandPreview';
 
 export interface ICategoryUrlParams  extends Record<string, string | undefined>{
     id: string
@@ -20,7 +22,7 @@ export default function Category() {
     useEffect(() => {
         setLoading(true);
 
-        api("get", "/api/category/" + params.id)
+        api("get", "/api/category/" + params.id, "user")
         .then(res => {
             if(res.status === "error"){
                 throw {
@@ -30,7 +32,7 @@ export default function Category() {
             setCategory(res.data);
         })
         .then(() => {
-            return api("get", "/api/category/" + params.id +"/brand")
+            return api("get", "/api/category/" + params.id +"/brand","user")
         })
         .then(res=> {
             if(res.status === "error"){
@@ -54,11 +56,11 @@ export default function Category() {
             { errorMessage && <p>Error: {errorMessage}</p>}
 
             {category && (
-                <div>
+                <div className='mb-4'>
                     <h1>{category?.name}</h1>
 
                     {brands && (
-                        <div className='display-inline-block'>
+                        <div className='text-center'>
                             {brands.map (brand => <BrandPreview key={"brand-" + brand.brandId} brand={brand}/>)}
                         </div>
                     )}

@@ -5,13 +5,20 @@ import { DevConfig } from "../../configs";
 import AdModel from "./AdModel.model";
 import IAddAd from "./dto/IAddAd.dto";
 import IEditAd from "./dto/IEditAd.dto";
+import { IAdEquipment, IAdSafety, IAdVehicleCondition } from './dto/IAddAd.dto';
 
 export interface IAdAdapterOptions extends IAdapterOptions {
     loadPhotos:boolean
+    loadEquipments: boolean
+    loadSafety: boolean
+    loadVehicleCondition: boolean
 }
 
 export const DefaultAdAdapterOptions: IAdAdapterOptions = {
-    loadPhotos:false
+    loadPhotos:false,
+    loadEquipments: false,
+    loadSafety: false,
+    loadVehicleCondition: false,
 }
 
 export default class AdService extends BaseService<AdModel, IAdAdapterOptions> {
@@ -45,10 +52,8 @@ export default class AdService extends BaseService<AdModel, IAdAdapterOptions> {
             ad.interiorMaterial     =  data?.interior_material;
             ad.replacement          =  data?.replacement;
             ad.title                =  data?.title;
-            ad.price                =  data?.price;
-            ad.fixed                =  data?.fixed;
+            ad.price                =  +data?.price;
             ad.year                 =  data?.year;
-            ad.mark                 =  data?.mark;
             ad.cm3                  =  data?.cm3;
             ad.kw                   =  data?.kw;
             ad.ks                   =  data?.ks;
@@ -61,29 +66,81 @@ export default class AdService extends BaseService<AdModel, IAdAdapterOptions> {
             if (options.loadPhotos) {
                 ad.photos = await this.services.photo.getAllByAdId(ad.adId);
             }
+            if (options.loadEquipments) {
+                ad.equipments = await this.services.equipment.getAllByAdId(ad.adId);
+            }
+            if (options.loadSafety) {
+                ad.safeties = await this.services.safety.getAllByAdId(ad.adId);
+            }
+            if (options.loadVehicleCondition) {
+                ad.vehicleConditions = await this.services.vehicleCondition.getAllByAdId(ad.adId);
+            }
 
             resolve(ad);
         })
     }
 
-    async getAllByCategoryId(categoryId: number,){
-        return this.getAllByFieldNameAndValue("category_id", categoryId, DefaultAdAdapterOptions);
+    async getAllByCategoryId(categoryId: number, options: IAdAdapterOptions){
+        return this.getAllByFieldNameAndValue("category_id", categoryId, options);
     }
 
-    async getAllByUserId(userId: number,){
-        return this.getAllByFieldNameAndValue("user_id", userId, DefaultAdAdapterOptions);
+    async getAllByUserId(userId: number, options: IAdAdapterOptions){
+        return this.getAllByFieldNameAndValue("user_id", userId, options);
     }
 
-    async getAllByBrandId(brandId:number,){
-        return this.getAllByFieldNameAndValue("brand_id", brandId, DefaultAdAdapterOptions);
+    async getAllByBrandId(brandId:number, options: IAdAdapterOptions){
+        return this.getAllByFieldNameAndValue("brand_id", brandId, options);
     }
 
-    async getAllByModelId(modelId:number,){
-        return this.getAllByFieldNameAndValue("model_id", modelId, DefaultAdAdapterOptions);
+    async getAllByModelId(modelId:number, options: IAdAdapterOptions){
+        return this.getAllByFieldNameAndValue("model_id", modelId, options);
     }
 
     async add(data: IAddAd): Promise<AdModel> {
         return this.baseAdd(data, DefaultAdAdapterOptions);
+    }
+
+    async addAdEquipment(data:IAdEquipment): Promise<number> {
+        return new Promise((resolve, reject) => {
+            const sql: string = "INSERT ad_equipment SET ad_id = ?, equipment_id = ?;";
+
+            this.db.execute(sql, [data.ad_id, data.equipment_id])
+            .then(async result => {
+                const info: any = result;
+                resolve(+(info[0]?.insertId));
+            })
+            .catch(error => {
+                reject(error);
+            });
+        })
+    }
+    async addAdSafety(data:IAdSafety): Promise<number> {
+        return new Promise((resolve, reject) => {
+            const sql: string = "INSERT ad_safety SET ad_id = ?, safety_id = ?;";
+
+            this.db.execute(sql, [data.ad_id, data.safety_id])
+            .then(async result => {
+                const info: any = result;
+                resolve(+(info[0]?.insertId));
+            })
+            .catch(error => {
+                reject(error);
+            });
+        })
+    }
+    async addAdVehicleCondition(data:IAdVehicleCondition): Promise<number> {
+        return new Promise((resolve, reject) => {
+            const sql: string = "INSERT ad_vehicle_condition SET ad_id = ?, vehicle_condition_id = ?;";
+
+            this.db.execute(sql, [data.ad_id, data.vehicle_condition_id])
+            .then(async result => {
+                const info: any = result;
+                resolve(+(info[0]?.insertId));
+            })
+            .catch(error => {
+                reject(error);
+            });
+        })
     }
 
     public async editById(adId: number, data: IEditAd, options: IAdAdapterOptions):Promise <AdModel> {
@@ -94,7 +151,10 @@ export default class AdService extends BaseService<AdModel, IAdAdapterOptions> {
         return new Promise(resolve => {
             this.services.ad.getById(adId,DefaultAdAdapterOptions)
             .then(() => this.getById(adId, {
-                loadPhotos: true
+                loadPhotos: true,
+                loadEquipments: false,
+                loadSafety: false,
+                loadVehicleCondition: false
             }))
             .then(ad => {
                 if (ad === null) throw { status: 404, message: "Ad not found!" }

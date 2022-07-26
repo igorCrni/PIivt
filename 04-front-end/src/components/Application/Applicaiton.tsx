@@ -1,27 +1,44 @@
 import React from 'react';
 import './Applicaiton.sass';
 import {Container} from 'react-bootstrap';
-import LoginPage from '../User/LoginPage';
-import ContactPage from '../Pages/ContactPage/ContactPage';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Menu from '../Menu/Menu';
+import UserLoginPage from '../User/UserLoginPage/UserLoginPage';
+import { Route, Routes } from 'react-router-dom';
 import Category from '../Category/Category';
+import UserProfile from '../User/Profile/UserProfile';
 import CategoryList from '../Category/CategoryList';
+import UserRegisterPage from '../User/UserRegisterPage/UserRegisterPage';
+import { Provider } from 'react-redux';
+import AppStore from '../../stores/AppStore';
+import Menu from '../Menu/Menu';
+import UserAdAdd from '../User/Profile/UserAdAdd';
+import UserAdAddForCategory from '../User/Profile/UserAdAddForCategory';
+import UserAdAddForBrand from '../User/Profile/UserAdAddForBrand';
+import UserAdAddForModel from '../User/Profile/UserAdAddForModel';
+import UserAds from '../User/Profile/UserAds';
 
 function Applicaiton() {
   return (
-    <Container className='mt-4'>
-      <Menu />
-        <Routes>
+    <Provider store={AppStore}>
+      <Container className='mt-4'>
+        <Menu />
+          <Routes>
 
-          <Route path='/' element={<div></div>} />
-          <Route path='/contact' element={<ContactPage/>} />
-          <Route path='/auth/user/login' element={<LoginPage />}/>
-          <Route path='/categories' element={ <CategoryList/>} />
-          <Route path='/category/:id' element={<Category />} />
+            <Route path='/' element={<div></div>} />
+            <Route path='/auth/user/login' element={ <UserLoginPage /> } />
+            <Route path='/auth/user/register' element={<UserRegisterPage />}/>
+            <Route path='/categories' element={ <CategoryList/>} />
+            <Route path='/category/:id' element={<Category />} />
+            
+            <Route path="/user/:id" element={ <UserProfile /> } />
+            <Route path="/user/:id/ad" element={ <UserAds /> } />
+            <Route path="/user/:id/ad/add" element={ <UserAdAdd /> } />
+            <Route path="/user/:uid/category/:cid/ad/add" element={ <UserAdAddForCategory /> } />
+            <Route path="/user/:uid/category/:cid/brand/:bid/ad/add" element={ <UserAdAddForBrand /> } />
+            <Route path="/user/:uid/category/:cid/brand/:bid/model/:mid/ad/add" element={ <UserAdAddForModel /> } />
 
-        </Routes>
-    </Container>
+          </Routes>
+      </Container>
+    </Provider>
   );
 }
 

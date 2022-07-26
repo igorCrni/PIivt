@@ -28,6 +28,7 @@ import VehicleConditionService from './components/vehicleCondition/VehicleCondit
 import EmissionClassService from './components/emissionClass/EmissionClassService.service';
 import InteriorMaterialService from './components/interiorMaterial/InteriorMaterialService.service';
 import ReplacementService from './components/replacement/ReplacementService.service';
+import CarBodyService from './components/carBody/CarBodyService.service';
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -92,6 +93,7 @@ const applicationResources: IApplicationResources = {
         emissionClass:null,
         interiorMaterial: null,
         replacement: null,
+        carBody: null,
     }
 };
 applicationResources.services.category = new CategoryService(applicationResources);
@@ -115,6 +117,7 @@ applicationResources.services.vehicleCondition = new VehicleConditionService(app
 applicationResources.services.emissionClass = new EmissionClassService(applicationResources);
 applicationResources.services.interiorMaterial = new InteriorMaterialService(applicationResources);
 applicationResources.services.replacement = new ReplacementService(applicationResources);
+applicationResources.services.carBody = new CarBodyService(applicationResources);
 
 
 

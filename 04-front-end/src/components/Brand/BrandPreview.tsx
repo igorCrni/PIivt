@@ -4,7 +4,7 @@ export interface IBrandPreviewProperties {
     brand: IBrand;
 }
 
-export default function BrandPreview(props: IBrandPreviewProperties) {
+export default function AdPreview(props: IBrandPreviewProperties) {
     return (
         <div>
             <h2>{props.brand.name}</h2>

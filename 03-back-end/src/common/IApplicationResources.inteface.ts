@@ -20,6 +20,7 @@ import VehicleConditionService from '../components/vehicleCondition/VehicleCondi
 import EmissionClassService from '../components/emissionClass/EmissionClassService.service';
 import InteriorMaterialService from '../components/interiorMaterial/InteriorMaterialService.service';
 import ReplacementService from '../components/replacement/ReplacementService.service';
+import CarBodyService from '../components/carBody/CarBodyService.service';
 
 export interface IServices {
     category: CategoryService;
@@ -43,6 +44,7 @@ export interface IServices {
     emissionClass: EmissionClassService;
     interiorMaterial: InteriorMaterialService;
     replacement: ReplacementService;
+    carBody: CarBodyService;
 }
 
 export default interface IApplicationResources {

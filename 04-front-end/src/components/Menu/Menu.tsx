@@ -1,19 +1,20 @@
-import {Link } from "react-router-dom";
+import { useState } from 'react';
+import AppStore from '../../stores/AppStore';
+import MenuUser from './MenuUser';
+import MenuVisitor from './MenuVisitor';
+
 
 export default function Menu(){
-    return (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <Link className="navbar-brand" to="/">Home</Link>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="/navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
+    const [role, setRole] = useState<"visitor" | "user">(AppStore.getState().auth.role);
 
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <Link className="nav-item nav-link" to="/contact">Contact</Link>
-                    <Link className="nav-item nav-link" to="/categories">Categories</Link>
-                    <Link className="nav-item nav-link" to="/category/:id" ></Link>
-                    <Link className="nav-item nav-link" to="/auth/user/login">User Login</Link>
-                </div>
-            </nav>
+    AppStore.subscribe(() => {
+        setRole(AppStore.getState().auth.role)
+    });
+
+    return (
+            <>
+                { role === "visitor" && <MenuVisitor /> }
+                { role === "user" && <MenuUser /> }
+            </>
     )
 }

@@ -2,10 +2,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-throw-literal */
 import { useState, useEffect, useReducer } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { api, apiForm } from '../../../api/api';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { api} from '../../../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckSquare, faSquare } from '@fortawesome/free-regular-svg-icons';
+import { faCheckSquare, faSquare, faSquareMinus } from '@fortawesome/free-regular-svg-icons';
 import IEquipment from '../../../models/IEquipment.model';
 import IFuelType from '../../../models/IFuelType.model';
 import IDrive from '../../../models/IDrive.model';
@@ -22,15 +22,17 @@ import IEmissionClass from '../../../models/IEmissionClass.model';
 import IInteriorMaterial from '../../../models/IInteriorMaterial.model';
 import IReplacement from '../../../models/IReplacement.model';
 import ICarBody from '../../../models/ICarBody.model';
+import IAd from '../../../models/IAd.model';
+import UserAdPhotos from './UserAdPhotos';
+import IUser from '../../../models/IUser.model';
+import { motion } from 'framer-motion';
 
-export interface IUserAdAddForModelParams extends Record<string, string | undefined> {
-    uid: string
-    cid: string
-    bid: string
-    mid: string
+export interface IUserAdEditForModelParams extends Record<string, string | undefined> {
+    id: string
+    aid: string
 }
 
-interface IAddAdFormState {
+interface IEditAdFormState {
     title: string;
     price: number;
     year: string;
@@ -60,38 +62,38 @@ interface IAddAdFormState {
     replacementId:number;
 };
 
-type TSetTitle = {type: "addAdForm/setTitle", value: string};
-type TSetPrice = {type: "addAdForm/setPrice", value: number};
-type TSetYear = {type: "addAdForm/setYear", value: string};
-type TSetCm3 = {type: "addAdForm/setCm3", value: string};
-type TSetKw = {type: "addAdForm/setKw", value: string};
-type TSetKs = {type: "addAdForm/setKs", value: string};
-type TSetMileage = {type: "addAdForm/setMileage", value: string};
-type TSetColor = {type: "addAdForm/setColor", value: string};
-type TSetInteriorColor = {type: "addAdForm/setInteriorColor", value: string};
-type TSetRegistrationUntil = {type: "addAdForm/setRegistrationUntil", value: string};
-type TSetDescription   = { type: "addAdForm/setDescription",   value: string };
-type TAddCarBody   = { type: "addAdForm/addCarBody",   value: number };
-type TAddEquipment    = { type: "addAdForm/addEquipment",    value: number };
-type TRemoveEquipment = { type: "addAdForm/removeEquipment", value: number };
-type TAddFuelType   = { type: "addAdForm/addFuelType",   value: number };
-type TAddDrive   = { type: "addAdForm/addDrive",   value: number };
-type TAddTransmission  = { type: "addAdForm/addTransmission",   value: number };
-type TAddDoors  = { type: "addAdForm/addDoors",   value: number };
-type TAddSeats  = { type: "addAdForm/addSeats",   value: number };
-type TAddSteeringWheelSide  = { type: "addAdForm/addSteeringWheelSide",   value: number };
-type TAddAirCondition  = { type: "addAdForm/addAirCondition",   value: number };
-type TAddDamage  = { type: "addAdForm/addDamage",   value: number };
-type TAddOrigin  = { type: "addAdForm/addOrigin",   value: number };
-type TAddSafety  = { type: "addAdForm/addSafety",   value: number };
-type TRemoveSafety = { type: "addAdForm/removeSafety", value: number };
-type TAddVehicleCondition  = { type: "addAdForm/addVehicleCondition",   value: number };
-type TRemoveVehicleCondition  = { type: "addAdForm/removeVehicleCondition",   value: number };
-type TAddEmissionClass  = { type: "addAdForm/addEmissionClass",   value: number };
-type TAddInteriorMaterial  = { type: "addAdForm/addInteriorMaterial",   value: number };
-type TAddReplacement  = { type: "addAdForm/addReplacement",   value: number };
+type TSetTitle = {type: "editAdForm/setTitle", value: string};
+type TSetPrice = {type: "editAdForm/setPrice", value: number};
+type TSetYear = {type: "editAdForm/setYear", value: string};
+type TSetCm3 = {type: "editAdForm/setCm3", value: string};
+type TSetKw = {type: "editAdForm/setKw", value: string};
+type TSetKs = {type: "editAdForm/setKs", value: string};
+type TSetMileage = {type: "editAdForm/setMileage", value: string};
+type TSetColor = {type: "editAdForm/setColor", value: string};
+type TSetInteriorColor = {type: "editAdForm/setInteriorColor", value: string};
+type TSetRegistrationUntil = {type: "editAdForm/setRegistrationUntil", value: string};
+type TSetDescription   = { type: "editAdForm/setDescription",   value: string };
+type TAddCarBody   = { type: "editAdForm/addCarBody",   value: number };
+type TAddEquipment    = { type: "editAdForm/addEquipment",    value: number };
+type TRemoveEquipment = { type: "editAdForm/removeEquipment", value: number };
+type TAddFuelType   = { type: "editAdForm/addFuelType",   value: number };
+type TAddDrive   = { type: "editAdForm/setDrive",   value: number };
+type TAddTransmission  = { type: "editAdForm/setTransmission",   value: number };
+type TAddDoors  = { type: "editAdForm/setDoors",   value: number };
+type TAddSeats  = { type: "editAdForm/setSeats",   value: number };
+type TAddSteeringWheelSide  = { type: "editAdForm/setSteeringWheelSide",   value: number };
+type TAddAirCondition  = { type: "editAdForm/setAirCondition",   value: number };
+type TAddDamage  = { type: "editAdForm/setDamage",   value: number };
+type TAddOrigin  = { type: "editAdForm/setOrigin",   value: number };
+type TAddSafety  = { type: "editAdForm/addSafety",   value: number };
+type TRemoveSafety = { type: "editAdForm/removeSafety", value: number };
+type TAddVehicleCondition  = { type: "editAdForm/addVehicleCondition",   value: number };
+type TRemoveVehicleCondition  = { type: "editAdForm/removeVehicleCondition",   value: number };
+type TAddEmissionClass  = { type: "editAdForm/setEmissionClass",   value: number };
+type TAddInteriorMaterial  = { type: "editAdForm/setInteriorMaterial",   value: number };
+type TAddReplacement  = { type: "editAdForm/setReplacement",   value: number };
 
-type AddAdFormAction = TSetTitle 
+type EditAdFormAction = TSetTitle 
                      | TSetPrice 
                      | TSetYear
                      | TSetCm3
@@ -122,9 +124,9 @@ type AddAdFormAction = TSetTitle
                      | TAddInteriorMaterial
                      | TAddReplacement ;
 
-function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): IAddAdFormState {
+function EditAdFormReducer(oldState: IEditAdFormState, action: EditAdFormAction): IEditAdFormState {
     switch(action.type){
-        case "addAdForm/setTitle": {
+        case "editAdForm/setTitle": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -135,7 +137,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/setPrice": {
+        case "editAdForm/setPrice": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -146,7 +148,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/setYear": {
+        case "editAdForm/setYear": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -157,7 +159,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/setCm3": {
+        case "editAdForm/setCm3": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -168,7 +170,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/setKw": {
+        case "editAdForm/setKw": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -179,7 +181,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/setKs": {
+        case "editAdForm/setKs": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -190,7 +192,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/setMileage": {
+        case "editAdForm/setMileage": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -201,7 +203,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/setColor": {
+        case "editAdForm/setColor": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -212,7 +214,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/setInteriorColor": {
+        case "editAdForm/setInteriorColor": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -223,7 +225,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/setRegistrationUntil": {
+        case "editAdForm/setRegistrationUntil": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -234,7 +236,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/setDescription": {
+        case "editAdForm/setDescription": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -245,7 +247,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addCarBody": {
+        case "editAdForm/addCarBody": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -256,7 +258,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
         
-        case "addAdForm/addEquipment":{
+        case "editAdForm/addEquipment":{
             if (oldState.equipmentIds.includes(action.value)) {
                 return oldState;
             }
@@ -271,7 +273,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/removeEquipment": {
+        case "editAdForm/removeEquipment": {
             if (!oldState.equipmentIds.includes(action.value)) {
                 return oldState;
             }
@@ -285,7 +287,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addFuelType": {
+        case "editAdForm/addFuelType": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -296,7 +298,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addDrive": {
+        case "editAdForm/setDrive": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -307,7 +309,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addTransmission": {
+        case "editAdForm/setTransmission": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -318,7 +320,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addDoors": {
+        case "editAdForm/setDoors": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -329,7 +331,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addSeats": {
+        case "editAdForm/setSeats": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -340,7 +342,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addSteeringWheelSide": {
+        case "editAdForm/setSteeringWheelSide": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -351,7 +353,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addAirCondition": {
+        case "editAdForm/setAirCondition": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -362,7 +364,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addDamage": {
+        case "editAdForm/setDamage": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -373,7 +375,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addOrigin": {
+        case "editAdForm/setOrigin": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -384,7 +386,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addSafety":{
+        case "editAdForm/addSafety":{
             if (oldState.safetyIds.includes(action.value)) {
                 return oldState;
             }
@@ -398,7 +400,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/removeSafety": {
+        case "editAdForm/removeSafety": {
             if (!oldState.safetyIds.includes(action.value)) {
                 return oldState;
             }
@@ -412,7 +414,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addVehicleCondition":{
+        case "editAdForm/addVehicleCondition":{
             if (oldState.vehicleConditionIds.includes(action.value)) {
                 return oldState;
             }
@@ -427,7 +429,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/removeVehicleCondition": {
+        case "editAdForm/removeVehicleCondition": {
             if (!oldState.vehicleConditionIds.includes(action.value)) {
                 return oldState;
             }
@@ -441,7 +443,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addEmissionClass": {
+        case "editAdForm/setEmissionClass": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -452,7 +454,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addInteriorMaterial": {
+        case "editAdForm/setInteriorMaterial": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -463,7 +465,7 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
             }
         }
 
-        case "addAdForm/addReplacement": {
+        case "editAdForm/setReplacement": {
             return {
                 ...oldState,
                 equipmentIds: [ ...oldState.equipmentIds ],
@@ -478,17 +480,17 @@ function AddAdFormReducer(oldState: IAddAdFormState, action: AddAdFormAction): I
     }
 }
 
-export default function UserAdAddForModel() {
-    const params = useParams<IUserAdAddForModelParams>();
-    const userId = params.uid;
-    const categoryId = params.cid;
-    const brandId = params.bid;
-    const modelId = params.mid;
+export default function UserEditAd() {
+    const params = useParams<IUserAdEditForModelParams>();
+    const userId = +(params.id ?? '');
+    const adId = +(params.aid ?? '');
 
     const navigate = useNavigate();
 
     
     const [errorMessage, setErrorMessage] = useState<string>("");
+    const [ad, setAd] = useState<IAd>();
+    // const [user, setUser] = useState<IUser>();
     const [equipment, setEquipment] = useState<IEquipment[]>([]);
     const [fuel, setFuel] = useState<IFuelType[]>([]);
     const [drive, setDrive] = useState<IDrive[]>([]);
@@ -505,9 +507,8 @@ export default function UserAdAddForModel() {
     const [im, setIm] = useState<IInteriorMaterial[]>([]);
     const [replacement, setReplacement] = useState<IReplacement[]>([]);
     const [carBody, setCarBody] = useState<ICarBody[]>([]);
-    const [file, setFile] =useState<File>();
 
-    const [ formState, dispatchFormStateAction ] = useReducer(AddAdFormReducer, {
+    const [ formState, dispatchFormStateAction ] = useReducer(EditAdFormReducer, {
         title: "",
         price: NaN,
         year: "",
@@ -519,7 +520,7 @@ export default function UserAdAddForModel() {
         interiorColor: "",
         registrationUntil:"",
         description: "",
-        carBodyId:NaN,
+        carBodyId: NaN,
         equipmentIds: [],
         fuelTypeId:NaN,
         driveId:NaN,
@@ -536,6 +537,40 @@ export default function UserAdAddForModel() {
         interiorMaterialId:NaN,
         replacementId:NaN,
     });
+
+    // const loadUser = () => {
+    //     api("get", "/api/user/" + userId)
+    //     .then(res => {
+    //         if (res.status !== "ok") {
+    //             throw new Error("Could not load this user!");
+    //         }
+
+    //         return res.data;
+    //     })
+    //     .then(user => {
+    //         setUser(user);
+    //     })
+    //     .catch(error => {
+    //         setErrorMessage(error?.message ?? "Unknown error!");
+    //     });
+    // }
+
+    const loadAd = () => {
+        api("get", "/api/user/"+userId+"/ad/"+adId)
+        .then(res => {
+            if (res.status !== "ok") {
+                throw new Error("Could not load this ad!");
+            }
+
+            return res.data;
+        })
+        .then(ad => {
+            setAd(ad);
+        })
+        .catch(error => {
+            setErrorMessage(error?.message ?? "Unknown error!");
+        });
+    };
 
     const loadEquipment = () => {
         api("get", "/api/equipment")
@@ -811,53 +846,29 @@ export default function UserAdAddForModel() {
         });
     };
 
-    const doUpload = () => {
-        api("post","/api/user/"+userId+"/category/"+categoryId+"/brand/"+brandId+"/model/"+modelId+"/ad", formState)
-        .then(res => {
-            if(res.status !== "ok"){
-                throw {
-                    message: "Could not add this ad!"
-                }
-            }
-            return res.data;
-        })
-        .then(ad => {
-            if(!ad?.adId){
-                throw new Error("Could not fetch new ad data!");
-            }
-            return ad;
-        })
-        .then(ad => {
-            if (!file) {
-                throw new Error("No ad photo selected!");
-            }
-
-            return {
-                file,
-                ad
-            };
-        })
-        .then(({ file, ad }) => {
-            const data = new FormData();
-            data.append("image", file);
-            return apiForm("post", "/api/user/"+userId+"/ad/"+ad?.adId+"/photo", data)
-        })
+    const doEditAd = () => {
+        api("put", "/api/user/" + userId + "/ad/" + adId, formState)
         .then(res => {
             if (res.status !== "ok") {
-                throw new Error("Could not upload ad photo!");
+                throw new Error("Could not edit this ad! Reason: " + res?.data?.map((error: any) => error?.instancePath + " " + error?.message).join(", "));
             }
 
             return res.data;
+        })
+        .then(ad => {
+            if (!ad?.adId) {
+                throw new Error("Could not fetch the edited ad data!");
+            }
         })
         .then(() => {
             navigate("/user/" + userId , {
                 replace: true,
             });
         })
-        .catch(error=>{
-            setErrorMessage(error?.message ?? "Uknown error!");
+        .catch(error => {
+            setErrorMessage(error?.message ?? "Unknown error!");
         });
-    }
+    };
 
     useEffect(() => {
         loadEquipment();
@@ -878,25 +889,85 @@ export default function UserAdAddForModel() {
         loadCarBody();
     },[]);
 
+    useEffect(() => {
+        setErrorMessage("");
+        // loadUser();
+        loadAd();
+    }, [ params.id, params.aid, ]);
+
+    useEffect(() => {
+        dispatchFormStateAction({ type: "editAdForm/setTitle", value: ad?.title ?? '' });
+        dispatchFormStateAction({ type: "editAdForm/setPrice", value: ad?.price ?? NaN });
+        dispatchFormStateAction({ type: "editAdForm/setYear", value: ad?.year ?? '' });
+        dispatchFormStateAction({ type: "editAdForm/setCm3", value: ad?.cm3 ?? '' });
+        dispatchFormStateAction({ type: "editAdForm/setKs", value: ad?.ks ?? '' });
+        dispatchFormStateAction({ type: "editAdForm/setKw", value: ad?.kw ?? '' });
+        dispatchFormStateAction({ type: "editAdForm/setMileage", value: ad?.mileage ?? '' });
+        dispatchFormStateAction({ type: "editAdForm/setColor", value: ad?.color ?? '' });
+        dispatchFormStateAction({ type: "editAdForm/setInteriorColor", value: ad?.interiorColor ?? '' });
+        dispatchFormStateAction({ type: "editAdForm/setRegistrationUntil", value: ad?.registrationUntil ?? '' });
+        dispatchFormStateAction({ type: "editAdForm/setDescription", value: ad?.description ?? '' });
+        dispatchFormStateAction({ type: "editAdForm/addCarBody", value: ad?.carBodyId ?? NaN });
+        dispatchFormStateAction({ type: "editAdForm/addFuelType", value: ad?.fuelTypeId ?? NaN });
+        dispatchFormStateAction({ type: "editAdForm/setDrive", value: ad?.driveId ?? NaN });
+        dispatchFormStateAction({ type: "editAdForm/setTransmission", value: ad?.transmissionId ?? NaN });
+        dispatchFormStateAction({ type: "editAdForm/setDoors", value: ad?.doorsId ?? NaN });
+        dispatchFormStateAction({ type: "editAdForm/setSeats", value: ad?.seatsId ?? NaN });
+        dispatchFormStateAction({ type: "editAdForm/setSteeringWheelSide", value: ad?.steeringWheelSideId ?? NaN });
+        dispatchFormStateAction({ type: "editAdForm/setAirCondition", value: ad?.airConditionId ?? NaN });
+        dispatchFormStateAction({ type: "editAdForm/setDamage", value: ad?.damageId ?? NaN });
+        dispatchFormStateAction({ type: "editAdForm/setOrigin", value: ad?.originId ?? NaN });
+        dispatchFormStateAction({ type: "editAdForm/setEmissionClass", value: ad?.emissionClassId ?? NaN });
+        dispatchFormStateAction({ type: "editAdForm/setInteriorMaterial", value: ad?.interiorMaterialId ?? NaN });
+        dispatchFormStateAction({ type: "editAdForm/setReplacement", value: ad?.replacementId ?? NaN });
+
+        for (let equipment of ad?.equipments ?? []) {
+            dispatchFormStateAction({ type: "editAdForm/addEquipment", value: equipment.equipmentId });
+        }
+        for (let safety of ad?.safeties ?? []) {
+            dispatchFormStateAction({ type: "editAdForm/addSafety", value: safety.safetyId });
+        }
+        for (let vehicleCondition of ad?.vehicleConditions ?? []) {
+            dispatchFormStateAction({ type: "editAdForm/addVehicleCondition", value: vehicleCondition.vehicleConditionId });
+        }
+    }, [ ad ]);
+
     return(
-        <div>
+        <motion.div
+        initial={{
+            position: "relative",
+            top: 20,
+            scale: 0.75,
+            opacity: 0,
+        }}
+        animate={{
+            top: 0,
+            scale: 1,
+            opacity: 1,
+        }}
+        transition={{
+            delay: 0.25,
+        }}>
             <div className="card">
                 <div className="card-body">
                     <div className="card-title text-center">
-                        <h1>Add ad</h1>
+                        <h1>Edit ad</h1>
                     </div>
                     <div className="card-text">
                         {errorMessage && <div className="alert alert-danger mb-3">{errorMessage}</div>}
                         <div className="form-group mb-3">
                             <label className='me-3'>Car Body:</label>
-                                    <select className='form-select-sm me-5' value={formState.carBodyId} onChange={e => dispatchFormStateAction({type:"addAdForm/addCarBody", value: +e.target.value})}>
-                                    <option>Select car body</option>
+                                    <select className='form-select-sm me-5' 
+                                        value={formState.carBodyId} 
+                                        onChange={e => dispatchFormStateAction({type:"editAdForm/addCarBody", value: +e.target.value})}>
+                                    {/* <option value={formState.carBodyId}>{ad?.carBody.name}</option> */}
                                     {carBody.map(carBody => (
                                         
                                         <option value={carBody.carBodyId}>{carBody.name}</option>
                                         
                                     ))}
                                     </select>
+                                    
                         </div>
                         <div className='form-group mb-3'>
                             <div className='row'>
@@ -905,7 +976,7 @@ export default function UserAdAddForModel() {
                                         <span className='input-group-text'>Title</span>
                                         <input type="text" className='form-control form-control-sm' 
                                                 value={formState.title}
-                                                onChange={e => dispatchFormStateAction({type:"addAdForm/setTitle", value: e.target.value})}
+                                                onChange={e => dispatchFormStateAction({type:"editAdForm/setTitle", value: e.target.value})}
                                                 />
                                     </div>
                                 </div>
@@ -914,7 +985,7 @@ export default function UserAdAddForModel() {
                                         <span className='input-group-text'>Price</span>
                                         <input type="number" min={0.01} step={0.01} className='form-control form-control-sm' 
                                                 value={formState.price}
-                                                onChange={e => dispatchFormStateAction({type:"addAdForm/setPrice", value: +e.target.value})}
+                                                onChange={e => dispatchFormStateAction({type:"editAdForm/setPrice", value: +e.target.value})}
                                                 />
                                         <span className='input-group-text'>€</span>
                                     </div>
@@ -925,11 +996,13 @@ export default function UserAdAddForModel() {
                         <div className="form-group mb-5">
                             
                                {equipment.map(equipment => (
-                                    <div className='d-inline-block mx-2'>
+                                    <div className='d-inline-block mx-2' 
+                                         key={ "equipment-" + equipment.equipmentId }
+                                    >
                                         {
                                         formState.equipmentIds.includes(equipment.equipmentId)
-                                        ? <FontAwesomeIcon onClick={ () => dispatchFormStateAction({type:"addAdForm/removeEquipment", value: equipment.equipmentId})} icon={faCheckSquare} />
-                                        : <FontAwesomeIcon onClick={ () => dispatchFormStateAction({type:"addAdForm/addEquipment", value: equipment.equipmentId})} icon={faSquare} />
+                                        ? <FontAwesomeIcon onClick={ () => dispatchFormStateAction({type:"editAdForm/removeEquipment", value: equipment.equipmentId})} icon={faCheckSquare} />
+                                        : <FontAwesomeIcon onClick={ () => dispatchFormStateAction({type:"editAdForm/addEquipment", value: equipment.equipmentId})} icon={faSquare} />
                                         } {equipment.name}
                                     </div>
                                 ))}
@@ -938,7 +1011,7 @@ export default function UserAdAddForModel() {
                             <div className='row'>
                                 <div className='col col-3'>
                                     <label className='me-2'>Fuel type:</label>
-                                    <select className='form-select-sm' value={formState.fuelTypeId} onChange={e => dispatchFormStateAction({type:"addAdForm/addFuelType", value: +e.target.value})}>
+                                    <select className='form-select-sm' value={formState.fuelTypeId} onChange={e => dispatchFormStateAction({type:"editAdForm/addFuelType", value: +e.target.value})}>
                                             <option>Select fuel type</option>
                                                 {fuel.map(fuel => (
                                             
@@ -949,7 +1022,7 @@ export default function UserAdAddForModel() {
                                 </div>
                                 <div className='col col-3'>
                                     <label className='me-2'>Drive type:</label>
-                                        <select className='form-select-sm' value={formState.driveId} onChange={e => dispatchFormStateAction({type:"addAdForm/addDrive", value: +e.target.value})}>
+                                        <select className='form-select-sm' value={formState.driveId} onChange={e => dispatchFormStateAction({type:"editAdForm/setDrive", value: +e.target.value})}>
                                         <option>Select drive type</option>
                                         {drive.map(drive => (
                                             
@@ -960,7 +1033,7 @@ export default function UserAdAddForModel() {
                                 </div>
                                 <div className='col col-4'>
                                     <label className='me-3'>Transmission type:</label>
-                                        <select className='form-select-sm me-5' value={formState.transmissionId} onChange={e => dispatchFormStateAction({type:"addAdForm/addTransmission", value: +e.target.value})}>
+                                        <select className='form-select-sm me-5' value={formState.transmissionId} onChange={e => dispatchFormStateAction({type:"editAdForm/setTransmission", value: +e.target.value})}>
                                         <option>Select transmission type</option>
                                         {transmission.map(transmission => (
                                             
@@ -975,7 +1048,7 @@ export default function UserAdAddForModel() {
                             <div className='row'>
                                 <div className='col col-3'>
                                     <label className='me-3'>Doors:</label>
-                                    <select className='form-select-sm me-5'value={formState.doorsId} onChange={e => dispatchFormStateAction({type:"addAdForm/addDoors", value: +e.target.value})}>
+                                    <select className='form-select-sm me-5'value={formState.doorsId} onChange={e => dispatchFormStateAction({type:"editAdForm/setDoors", value: +e.target.value})}>
                                     <option>Select number of doors</option>
                                     {doors.map(doors => (
                                         
@@ -986,7 +1059,7 @@ export default function UserAdAddForModel() {
                                 </div>
                                 <div className='col col-3'>
                                     <label className='me-3'>Seats:</label>
-                                    <select className='form-select-sm me-5' value={formState.seatsId} onChange={e => dispatchFormStateAction({type:"addAdForm/addSeats", value: +e.target.value})}>
+                                    <select className='form-select-sm me-5' value={formState.seatsId} onChange={e => dispatchFormStateAction({type:"editAdForm/setSeats", value: +e.target.value})}>
                                     <option>Select number of seats</option>
                                     {seats.map(seats => (
                                         
@@ -997,7 +1070,7 @@ export default function UserAdAddForModel() {
                                 </div>
                                 <div className='col col-4'>
                                     <label className='me-3'>Steering wheel side:</label>
-                                    <select className='form-select-sm me-5' value={formState.steeringWheelSideId} onChange={e => dispatchFormStateAction({type:"addAdForm/addSteeringWheelSide", value: +e.target.value})}>
+                                    <select className='form-select-sm me-5' value={formState.steeringWheelSideId} onChange={e => dispatchFormStateAction({type:"editAdForm/setSteeringWheelSide", value: +e.target.value})}>
                                     <option>Select Steering wheel side</option>
                                     {sws.map(sws => (
                                         
@@ -1012,7 +1085,7 @@ export default function UserAdAddForModel() {
                             <div className='row'>
                                 <div className='col col-4'>
                                     <label className='me-3'>Air condition:</label>
-                                    <select className='form-select-sm me-5' value={formState.airConditionId} onChange={e => dispatchFormStateAction({type:"addAdForm/addAirCondition", value: +e.target.value})}>
+                                    <select className='form-select-sm me-5' value={formState.airConditionId} onChange={e => dispatchFormStateAction({type:"editAdForm/setAirCondition", value: +e.target.value})}>
                                     <option>Select Air condition</option>
                                     {airCondition.map(airCondition => (
                                         
@@ -1023,7 +1096,7 @@ export default function UserAdAddForModel() {
                                 </div>
                                 <div className='col col-4'>
                                     <label className='me-3'>Damage:</label>
-                                    <select className='form-select-sm me-5' value={formState.damageId} onChange={e => dispatchFormStateAction({type:"addAdForm/addDamage", value: +e.target.value})} >
+                                    <select className='form-select-sm me-5' value={formState.damageId} onChange={e => dispatchFormStateAction({type:"editAdForm/setDamage", value: +e.target.value})} >
                                     <option>Damage condition</option>
                                     {damage.map(damage => (
                                         
@@ -1034,7 +1107,7 @@ export default function UserAdAddForModel() {
                                 </div>
                                 <div className='col col-3'>
                                     <label className='me-3'>Origin:</label>
-                                    <select className='form-select-sm me-5' value={formState.originId} onChange={e => dispatchFormStateAction({type:"addAdForm/addOrigin", value: +e.target.value})}>
+                                    <select className='form-select-sm me-5' value={formState.originId} onChange={e => dispatchFormStateAction({type:"editAdForm/setOrigin", value: +e.target.value})}>
                                     <option>Slecet origin</option>
                                     {origin.map(origin => (
                                         
@@ -1050,11 +1123,13 @@ export default function UserAdAddForModel() {
                         <div className="form-group mb-3">
                             
                                {safety.map(safety => (
-                                    <div className='d-inline-block mx-2'>
+                                    <div className='d-inline-block mx-2'
+                                         key={ "safety-" + safety.safetyId }
+                                    >
                                         {
                                         formState.safetyIds.includes(safety.safetyId)
-                                        ? <FontAwesomeIcon onClick={ () => dispatchFormStateAction({type:"addAdForm/removeSafety", value: safety.safetyId})} icon={faCheckSquare} />
-                                        : <FontAwesomeIcon onClick={ () => dispatchFormStateAction({type:"addAdForm/addSafety", value: safety.safetyId})} icon={faSquare} />
+                                        ? <FontAwesomeIcon onClick={ () => dispatchFormStateAction({type:"editAdForm/removeSafety", value: safety.safetyId})} icon={faCheckSquare} />
+                                        : <FontAwesomeIcon onClick={ () => dispatchFormStateAction({type:"editAdForm/addSafety", value: safety.safetyId})} icon={faSquare} />
                                         } {safety.name}
                                     </div>
                                 ))}
@@ -1063,18 +1138,20 @@ export default function UserAdAddForModel() {
                         <div className="form-group mb-4">
                             
                                {vc.map(vc => (
-                                    <div className='d-inline-block mx-2'>
+                                    <div className='d-inline-block mx-2'
+                                         key={ "vehicleCondition-" + vc.vehicleConditionId }
+                                    >
                                         {
                                         formState.vehicleConditionIds.includes(vc.vehicleConditionId)
-                                        ? <FontAwesomeIcon onClick={ () => dispatchFormStateAction({type:"addAdForm/removeVehicleCondition", value: vc.vehicleConditionId})} icon={faCheckSquare} />
-                                        : <FontAwesomeIcon onClick={ () => dispatchFormStateAction({type:"addAdForm/addVehicleCondition", value: vc.vehicleConditionId})} icon={faSquare} />
+                                        ? <FontAwesomeIcon onClick={ () => dispatchFormStateAction({type:"editAdForm/removeVehicleCondition", value: vc.vehicleConditionId})} icon={faCheckSquare} />
+                                        : <FontAwesomeIcon onClick={ () => dispatchFormStateAction({type:"editAdForm/addVehicleCondition", value: vc.vehicleConditionId})} icon={faSquare} />
                                         } {vc.name}
                                     </div>
                                 ))}
                         </div>
                         <div className='form-group mb-5'>
                                 <label className='me-3 mt-4'>Emission class:</label>
-                                <select className='form-select-sm me-5' value={formState.emissionClassId} onChange={e => dispatchFormStateAction({type:"addAdForm/addEmissionClass", value: +e.target.value})}>
+                                <select className='form-select-sm me-5' value={formState.emissionClassId} onChange={e => dispatchFormStateAction({type:"editAdForm/setEmissionClass", value: +e.target.value})}>
                                 <option>Select emission class</option>
                                 {ec.map(ec => (
                                     
@@ -1083,7 +1160,7 @@ export default function UserAdAddForModel() {
                                 ))}
                                 </select>
                                 <label className='me-3 mt-4'>Interior material:</label>
-                                <select className='form-select-sm me-5' value={formState.interiorMaterialId} onChange={e => dispatchFormStateAction({type:"addAdForm/addInteriorMaterial", value: +e.target.value})}>
+                                <select className='form-select-sm me-5' value={formState.interiorMaterialId} onChange={e => dispatchFormStateAction({type:"editAdForm/setInteriorMaterial", value: +e.target.value})}>
                                 <option>Select Interior material</option>
                                 {im.map(im => (
                                     
@@ -1092,7 +1169,7 @@ export default function UserAdAddForModel() {
                                 ))}
                                 </select>
                                 <label className='me-3 mt-4'>Replacement:</label>
-                                <select className='form-select-sm me-5' value={formState.replacementId} onChange={e => dispatchFormStateAction({type:"addAdForm/addReplacement", value: +e.target.value})}>
+                                <select className='form-select-sm me-5' value={formState.replacementId} onChange={e => dispatchFormStateAction({type:"editAdForm/setReplacement", value: +e.target.value})}>
                                 <option>Select</option>
                                 {replacement.map(replacement => (
                                     
@@ -1108,7 +1185,7 @@ export default function UserAdAddForModel() {
                                         <span className='input-group-text'>First registration</span>
                                         <input type="text" className='form-control form-control-sm me-5' 
                                             value={formState.year}
-                                            onChange={e => dispatchFormStateAction({type:"addAdForm/setYear", value: e.target.value})}
+                                            onChange={e => dispatchFormStateAction({type:"editAdForm/setYear", value: e.target.value})}
                                         />
                                     </div>
                                 </div>
@@ -1117,7 +1194,7 @@ export default function UserAdAddForModel() {
                                         <span className='input-group-text'>CM3</span>
                                         <input type="text" className='form-control form-control-sm me-5'
                                             value={formState.cm3}
-                                            onChange={e => dispatchFormStateAction({type:"addAdForm/setCm3", value: e.target.value})} 
+                                            onChange={e => dispatchFormStateAction({type:"editAdForm/setCm3", value: e.target.value})} 
                                         />
                                     </div>
                                 </div>
@@ -1126,7 +1203,7 @@ export default function UserAdAddForModel() {
                                         <span className='input-group-text'>KW</span>
                                         <input type="text" className='form-control form-control-sm' 
                                             value={formState.kw}
-                                            onChange={e => dispatchFormStateAction({type:"addAdForm/setKw", value: e.target.value})}
+                                            onChange={e => dispatchFormStateAction({type:"editAdForm/setKw", value: e.target.value})}
                                         />
                                     </div>
                                 </div>
@@ -1139,7 +1216,7 @@ export default function UserAdAddForModel() {
                                         <span className='input-group-text'>KS</span>
                                         <input type="text" className='form-control form-control-sm me-5' 
                                             value={formState.ks}
-                                            onChange={e => dispatchFormStateAction({type:"addAdForm/setKs", value: e.target.value})}
+                                            onChange={e => dispatchFormStateAction({type:"editAdForm/setKs", value: e.target.value})}
                                         />
                                     </div>
                                 </div>
@@ -1148,7 +1225,7 @@ export default function UserAdAddForModel() {
                                         <span className='input-group-text'>Mileage</span>
                                         <input type="text" className='form-control form-control-sm me-5' 
                                             value={formState.mileage}
-                                            onChange={e => dispatchFormStateAction({type:"addAdForm/setMileage", value: e.target.value})}
+                                            onChange={e => dispatchFormStateAction({type:"editAdForm/setMileage", value: e.target.value})}
                                         />
                                     </div>
                                 </div>
@@ -1157,7 +1234,7 @@ export default function UserAdAddForModel() {
                                         <span className='input-group-text'>Color</span>
                                         <input type="text" className='form-control form-control-sm' 
                                             value={formState.color}
-                                            onChange={e => dispatchFormStateAction({type:"addAdForm/setColor", value: e.target.value})}
+                                            onChange={e => dispatchFormStateAction({type:"editAdForm/setColor", value: e.target.value})}
                                         />
                                     </div>
                                 </div>
@@ -1170,7 +1247,7 @@ export default function UserAdAddForModel() {
                                         <span className='input-group-text'>Interior color</span>
                                         <input type="text" className='form-control form-control-sm me-5' 
                                             value={formState.interiorColor}
-                                            onChange={e => dispatchFormStateAction({type:"addAdForm/setInteriorColor", value: e.target.value})}
+                                            onChange={e => dispatchFormStateAction({type:"editAdForm/setInteriorColor", value: e.target.value})}
                                         />
                                     </div>
                                 </div>
@@ -1179,7 +1256,7 @@ export default function UserAdAddForModel() {
                                         <span className='input-group-text'>Registration until</span>
                                         <input type="text" className='form-control form-control-sm' 
                                             value={formState.registrationUntil}
-                                            onChange={e => dispatchFormStateAction({type:"addAdForm/setRegistrationUntil", value: e.target.value})}
+                                            onChange={e => dispatchFormStateAction({type:"editAdForm/setRegistrationUntil", value: e.target.value})}
                                         />
                                     </div>
                                 </div>
@@ -1190,31 +1267,26 @@ export default function UserAdAddForModel() {
                             <div className="input-group">
                                 <textarea className="form-control form-control-sm" rows={ 5 }
                                     value={formState.description}
-                                    onChange={e => dispatchFormStateAction({type:"addAdForm/setDescription", value: e.target.value})}
+                                    onChange={e => dispatchFormStateAction({type:"editAdForm/setDescription", value: e.target.value})}
                                 />
                             </div>
                         </div>
-                        <div className="form-group mb-3">
-                            <label>Pictures</label>
-                            <div className='input-group'>
-                                <input type="file" accept=".jpg,.png" className="form-control form-control-sm" 
-                                    onChange={e => {
-                                        if (e.target.files){
-                                            setFile(e.target.files[0])
-                                        }
-                                    }}
-                                />
-                            </div>
-                        </div>
-                        <div className='form-group mb-3'>
-                            <button className='btn btn-primary' onClick={()=> doUpload()}>
-                                Upload
+                        <div className='form-group mb-3 text-center'>
+                            <button className='btn btn-primary me-2' onClick={()=> doEditAd()}>
+                                Edit
                             </button>
+                            <Link className='btn btn-secondary' to={"/user/"+userId}>Go back</Link>
+                        </div>
+
+                        <div className="col col-12 col-lg-5">
+                                <h2 className="h6">Manage photos</h2>
+
+                                <UserAdPhotos id={ userId } aId={ adId } />
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
     
 }

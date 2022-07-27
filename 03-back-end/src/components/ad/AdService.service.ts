@@ -2,10 +2,10 @@ import { resolve } from "path";
 import BaseService from "../../common/BaseService";
 import IAdapterOptions from "../../common/IAdapterOptions.interface";
 import { DevConfig } from "../../configs";
-import AdModel from "./AdModel.model";
 import IAddAd from "./dto/IAddAd.dto";
 import IEditAd from "./dto/IEditAd.dto";
 import { IAdEquipment, IAdSafety, IAdVehicleCondition } from './dto/IAddAd.dto';
+import AdModel from "./AdModel.model";
 
 export interface IAdAdapterOptions extends IAdapterOptions {
     loadPhotos:boolean
@@ -35,24 +35,21 @@ export default class AdService extends BaseService<AdModel, IAdAdapterOptions> {
             ad.brandId              = +data?.brand_id;
             ad.modelId              = +data?.model_id;
             ad.userId               = +data?.user_id;
-            ad.carBody              =  data?.car_body;
-            ad.fuelType             =  data?.fuel_type;
-            ad.drive                =  data?.drive;
-            ad.transmission         =  data?.transmission;
-            ad.doors                =  data?.doors;
-            ad.seats                =  data?.seats;
-            ad.steeringWheelSide    =  data?.steering_wheel_side;
-            ad.airCondition         =  data?.air_condition;
-            ad.damage               =  data?.damage;
-            ad.origin               =  data?.origin;
-            ad.safety               =  data?.safety;
-            ad.equipment            =  data?.equipment;
-            ad.vehicleCondition     =  data?.vehicle_condition;
-            ad.emissionClass        =  data?.emission_class;
-            ad.interiorMaterial     =  data?.interior_material;
-            ad.replacement          =  data?.replacement;
+            ad.carBodyId            = +data?.car_body_id;
+            ad.fuelTypeId           = +data?.fuel_type_id;
+            ad.driveId              = +data?.drive_id;
+            ad.transmissionId       = +data?.transmission_id;
+            ad.doorsId              = +data?.doors_id;
+            ad.seatsId              = +data?.seats_id;
+            ad.steeringWheelSideId  = +data?.steering_wheel_side_id;
+            ad.airConditionId       = +data?.air_condition_id;
+            ad.damageId             = +data?.damage_id;
+            ad.originId             = +data?.origin_id;
+            ad.emissionClassId      = +data?.emission_class_id;
+            ad.interiorMaterialId   = +data?.interior_material_id;
+            ad.replacementId        = +data?.replacement_id;
             ad.title                =  data?.title;
-            ad.price                =  +data?.price;
+            ad.price                = +data?.price;
             ad.year                 =  data?.year;
             ad.cm3                  =  data?.cm3;
             ad.kw                   =  data?.kw;
@@ -190,7 +187,7 @@ export default class AdService extends BaseService<AdModel, IAdAdapterOptions> {
         })
     }
 
-    public async editById(adId: number, data: IEditAd, options: IAdAdapterOptions):Promise <AdModel> {
+    async edit(adId: number, data: IEditAd, options: IAdAdapterOptions): Promise<AdModel> {
         return this.baseEditById(adId, data, options);
     }
 
@@ -249,6 +246,7 @@ export default class AdService extends BaseService<AdModel, IAdAdapterOptions> {
             });
         })
     }
+
     private async deleteAllAdSafetyByAdId(adId: number): Promise<true> {
         return new Promise(resolve => {
             const sql = `DELETE FROM ad_safety WHERE ad_id = ?;`;
@@ -263,6 +261,7 @@ export default class AdService extends BaseService<AdModel, IAdAdapterOptions> {
             });
         })
     }
+    
     private async deleteAllAdVehicleConditionByAdId(adId: number): Promise<true> {
         return new Promise(resolve => {
             const sql = `DELETE FROM ad_vehicle_condition WHERE ad_id = ?;`;

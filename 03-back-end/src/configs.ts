@@ -111,7 +111,7 @@ const DevConfig: IConfig = {
             allowedTypes: ["png","jpg"],
             allowedExtensions: [".png",".jpg"],
             width: {
-                min:320,
+                min:260,
                 max:1920,
             },
             height: {

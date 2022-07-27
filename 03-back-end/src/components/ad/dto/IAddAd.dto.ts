@@ -151,7 +151,7 @@ const AddAdValidator = ajv.compile({
         price: {
             type: "number",
             multipleOf: 0.01,
-            minimum: 0.01,
+            minimum: 0.00,
         },
         year: {
             type: "string",
@@ -160,7 +160,7 @@ const AddAdValidator = ajv.compile({
         },
         cm3: {
             type: "string",
-            minLength: 4,
+            minLength: 1,
             maxLength: 64,
         },
         kw: {

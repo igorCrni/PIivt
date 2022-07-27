@@ -3,7 +3,7 @@ import IServiceData from "../../../common/IServiceData.interface";
 
 const ajv = new Ajv();
 
-export default interface IEditAd extends IServiceData {
+export interface IEditAdDto {
     carBodyId: number;
     fuelTypeId: number;
     driveId: number;
@@ -32,7 +32,8 @@ export default interface IEditAd extends IServiceData {
     registrationUntil: string;
     description: string;
 }
-export interface IEditAdDto {
+
+export default interface IEditAd extends IServiceData {
     car_body_id: number;
     fuel_type_id: number;
     drive_id: number;
@@ -58,7 +59,6 @@ export interface IEditAdDto {
     registration_until: string;
     description: string;
 }
-
 
 const EditAdValidator = ajv.compile({
     type: "object",
@@ -134,7 +134,7 @@ const EditAdValidator = ajv.compile({
         price: {
             type: "number",
             multipleOf: 0.01,
-            minimum: 0.01,
+            minimum: 0.00,
         },
         year: {
             type: "string",
@@ -143,7 +143,7 @@ const EditAdValidator = ajv.compile({
         },
         cm3: {
             type: "string",
-            minLength: 4,
+            minLength: 1,
             maxLength: 64,
         },
         kw: {
@@ -183,25 +183,9 @@ const EditAdValidator = ajv.compile({
         },
     },
     required: [
-        "carBodyId",
-        "fuelTypeId",
-        "driveId",
-        "transmissionId",
-        "doorsId",
-        "seatsId",
-        "steeringWheelSideId",
-        "airConditionId",
-        "damageId",
-        "originId",
-        "emissionClassId",
-        "title",
-        "price",
-        "year",
-        "cm3",
-        "kw",
-        "ks",
-        "mileage",
-        "color",
+        "equipmentIds",
+        "safetyIds",
+        "vehicleConditionIds"
     ],
     additionalProperties: false,
 });

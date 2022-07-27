@@ -12,11 +12,11 @@ import * as uuid from "uuid";
 import * as sharp from "sharp";
 import PhotoModel from "../photo/PhotoModel.model";
 import { IUserAdapterOptions, DefaultUserAdapterOptions } from '../user/UserService.service';
-import IEditAdDto, { EditAdValidator } from './dto/IEditAd.dto';
+import { EditAdValidator, IEditAdDto } from './dto/IEditAd.dto';
 import { DefaultCategoryAdapterOptions } from '../category/CategoryService.service';
 import { DefaultAdAdapterOptions } from './AdService.service';
-import UserModel from '../../../dist/components/user/UserModel.model';
 import AdModel from './AdModel.model';
+import UserModel from '../user/UserModel.model';
 
 export default class AdController extends BaseController{
 
@@ -115,6 +115,53 @@ export default class AdController extends BaseController{
                         return res.status(404).send("Model not found!");
                     }
                     this.services.ad.getAllByModelId(modelId,{
+                        loadEquipments: true,
+                        loadPhotos: true,
+                        loadSafety: true,
+                        loadVehicleCondition: true,
+                    })
+                    .then(result => {
+                        res.send(result);
+                    })
+                    .catch(error => {
+                        res.status(500).send(error?.message);
+                    });
+                })
+            })
+        })
+        .catch(error => {
+            res.status(500).send(error?.message);
+        });
+    }
+
+    async getAd(req: Request, res: Response) {
+        const categoryId: number = +req.params?.cid;
+        const brandId: number = +req.params?.bid;
+        const modelId: number = +req.params?.mid;
+        const adId: number = +req.params?.aid;
+
+        this.services.category.getById(categoryId, {
+            loadBrands:false,
+        })
+        .then(result => {
+            if (result === null) {
+                return res.status(404).send("Category not found!");
+            }
+
+            this.services.brand.getById(brandId,{
+                loadModels:false,
+            })
+            .then(result => {
+                if (result === null) {
+                    return res.status(404).send("Brand not found!");
+                }
+
+                this.services.model.getById(modelId,{})
+                .then(result => {
+                    if (result === null) {
+                        return res.status(404).send("Model not found!");
+                    }
+                    this.services.ad.getById(adId,{
                         loadEquipments: true,
                         loadPhotos: true,
                         loadSafety: true,
@@ -495,7 +542,43 @@ export default class AdController extends BaseController{
                 }
             }
 
+            
             return result;
+        })
+        .then(async result => {
+            await this.services.ad.edit(result.ad.adId,{
+                car_body_id: data.carBodyId,
+                fuel_type_id: data.fuelTypeId,
+                drive_id: data.driveId,
+                transmission_id: data.transmissionId,
+                doors_id: data.doorsId,
+                seats_id: data.seatsId,
+                steering_wheel_side_id: data.steeringWheelSideId,
+                air_condition_id: data.airConditionId,
+                damage_id: data.damageId,
+                origin_id: data.originId,
+                emission_class_id: data.emissionClassId,
+                interior_material_id: data.interiorMaterialId,
+                replacement_id: data.replacementId,
+                title: data.title,
+                price: data.price,
+                year: data.year,
+                cm3: data.cm3,
+                kw: data.kw,
+                ks: data.ks,
+                mileage:data.mileage,
+                color: data.color,
+                interior_color: data.interiorColor,
+                registration_until: data.registrationUntil,
+                description: data.description,
+            },{
+                loadEquipments:false,
+                loadPhotos:false,
+                loadSafety:false,
+                loadVehicleCondition: false,
+            })
+            return result;
+
         })
         .then(async result => {
             await this.services.ad.commitChanges();
@@ -523,7 +606,7 @@ export default class AdController extends BaseController{
             ad: await this.services.ad.getById(adId, {
                 loadEquipments: true,
                 loadSafety: true,
-                loadVehicleCondition: false,
+                loadVehicleCondition: true,
                 loadPhotos: false,
             })
         }

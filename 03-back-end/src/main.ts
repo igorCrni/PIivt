@@ -69,6 +69,8 @@ function attactConnectionMonitoring(db: mysql2.Connection) {
     });
 }
 
+attactConnectionMonitoring(db);
+
 const applicationResources: IApplicationResources = {
     databaseConnection: db,
     services: {

@@ -5,7 +5,7 @@ import { useState, useEffect, useReducer } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api} from '../../../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckSquare, faSquare, faSquareMinus } from '@fortawesome/free-regular-svg-icons';
+import { faCheckSquare, faSquare } from '@fortawesome/free-regular-svg-icons';
 import IEquipment from '../../../models/IEquipment.model';
 import IFuelType from '../../../models/IFuelType.model';
 import IDrive from '../../../models/IDrive.model';
@@ -24,7 +24,6 @@ import IReplacement from '../../../models/IReplacement.model';
 import ICarBody from '../../../models/ICarBody.model';
 import IAd from '../../../models/IAd.model';
 import UserAdPhotos from './UserAdPhotos';
-import IUser from '../../../models/IUser.model';
 import { motion } from 'framer-motion';
 
 export interface IUserAdEditForModelParams extends Record<string, string | undefined> {
@@ -1278,11 +1277,11 @@ export default function UserEditAd() {
                             <Link className='btn btn-secondary' to={"/user/"+userId}>Go back</Link>
                         </div>
 
-                        <div className="col col-12 col-lg-5">
+                        {/* <div className="col col-12 col-lg-5">
                                 <h2 className="h6">Manage photos</h2>
 
                                 <UserAdPhotos id={ userId } aId={ adId } />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

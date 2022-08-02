@@ -22,10 +22,10 @@ import IReplacement from './IReplacement.model';
 
 export default interface IAd {
     adId: number;
-    category: ICategory;
-    brands: IBrand;
-    models: IModel;
-    user: IUser;
+    categoryId: number;
+    brandId: number;
+    modelId: number;
+    userId: number;
     photos: IPhoto[];
     carBodyId: number;
     fuelTypeId: number;

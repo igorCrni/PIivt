@@ -2,45 +2,43 @@
 /* eslint-disable no-throw-literal */
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import IBrand from '../../models/IBrand.model';
 import { api } from '../../api/api';
+import IModel from '../../models/IModel.model';
 import IAd from '../../models/IAd.model';
 import { faEuroSign } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Config } from '../../config';
 import { motion } from 'framer-motion';
 
-export interface ICategoryUrlParams  extends Record<string, string | undefined>{
+export interface IBrandUrlParams  extends Record<string, string | undefined>{
     cid: string
+    bid:string
 }
 
-export default function Category() {
-    const[brands , setBrands] = useState <IBrand[]>([]);
+export default function SearchBrand() {
+    const [ model, SetModel] = useState<IModel[]>([]);
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const[ads , setAds] = useState <IAd[]>([]);
-    const[ errorMessage, setErrorMessage] = useState<string>("");
+    let params = useParams<IBrandUrlParams>();
 
-    
-    let params = useParams<ICategoryUrlParams>();
-
-    const loadBrand = () => {
-        api("get", "/api/category/" + params.cid + "/brand")
-        .then(res=>{
-            if(res.status !== "ok"){
-                throw {
-                    message: "Could not load brand!"
-                }
+    useEffect(() => {
+        api("get", "/api/category/"+params.cid+"/brand/"+params.bid+"/model")
+        .then(apiResonse => {
+            if(apiResonse.status === "ok") {
+                return SetModel(apiResonse.data);
             }
-            return res.data;
+
+            throw{
+                message: 'Unknown error while loading categories...',
+            }
         })
-        .then(brands => {
-            setBrands(brands);
-        })
-        .catch(error=>{
-            setErrorMessage(error?.message ?? "Uknown error!");
+        .catch(error => {
+            setErrorMessage(error?.message ?? 'Unknown error while loading categories...');
         });
-    };
+    }, [params.bid, params.cid]);
+
     const loadAds = () => {
-        api("get", "/api/category/" + params.cid + "/ad")
+        api("get", "/api/category/"+params.cid+"/brand/"+params.bid+ "/ad")
         .then(res=>{
             if(res.status !== "ok"){
                 throw {
@@ -58,11 +56,10 @@ export default function Category() {
     };
 
     useEffect(() => {
-        loadBrand();
         loadAds();
-    },[params.cid]);
-    
-    return(
+    },[params.cid, params.bid]);
+
+    return (
         <div>
             { errorMessage && <p>Error: {errorMessage}</p>}
             <div className='card w-50' style={{margin:'0 auto'}}>
@@ -71,14 +68,14 @@ export default function Category() {
                         <h3 className='h4'>Search ads</h3>
                     </div>
                     <div className='card-text text-center'>
-                        <h6>Brands:</h6>
-                        {brands.map(brand=> (
-                            <Link className='btn btn-primary me-2' to={'/search/category/'+params.cid+'/brand/'+brand.brandId}>{brand.name}</Link>
+                    <h6>Models:</h6>
+                        {model.map(model=> (
+                            <Link className='btn btn-primary me-2' to={'/search/category/'+params.cid+'/brand/'+params.bid+'/model/'+model.modelId}>{model.name}</Link>
                         ))}
                     </div>
                 </div>
             </div>
-            <motion.div
+            <motion.div 
             initial={{
                 position: "relative",
                 top: 20,

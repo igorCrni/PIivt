@@ -1,3 +1,5 @@
+import { faListAlt } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
 export default function MenuVisitor(){
@@ -11,6 +13,9 @@ export default function MenuVisitor(){
 
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div className="navbar-nav">
+                    <Link className="nav-item nav-link" to="/search">
+                        <FontAwesomeIcon icon={ faListAlt } /> Ads
+                    </Link>
                     <Link className="nav-item nav-link" to="/auth/user/login">User login</Link>
                     <Link className="nav-item nav-link" to="/auth/user/register">Register an account</Link>
                 </div>

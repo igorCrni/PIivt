@@ -16,7 +16,7 @@ export default function MenuUser() {
 
     function doUserLogout() {
         AppStore.dispatch( { type: "auth.reset" } );
-        navigate("/");
+        navigate("/search");
     }
 
     const loadUser = () => {
@@ -52,7 +52,7 @@ export default function MenuUser() {
 
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div className="navbar-nav">
-                    <Link className="nav-item nav-link" to="/categories">
+                    <Link className="nav-item nav-link" to="/search">
                         <FontAwesomeIcon icon={ faListAlt } /> Ads
                     </Link>
 

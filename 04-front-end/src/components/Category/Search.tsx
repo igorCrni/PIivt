@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import ICategory from '../../models/ICategory.model';
 import { api } from '../../api/api';
 
-export default function CategoryList() {
+export default function Search() {
     const [ categories, setCategories] = useState<ICategory[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -25,17 +25,14 @@ export default function CategoryList() {
     }, []);
 
     return (
-        <div>
+        <div className='text-center'>
             {errorMessage && <p>Error: {errorMessage}</p>}
-            {!errorMessage && 
-                <ul>
+            <h3 className='mb-5'>Search</h3>
                     {categories.map(category => (
-                        <li key={ "category-" + category.categoryId}>
-                            <Link to={"/category/" + category.categoryId}>{category.name}</Link>
-                        </li>
+                        <Link className='btn btn-primary' to={"/search/category/" + category.categoryId}>{category.name}</Link>
+                        
                     ))}
-                </ul>
-            }
+            
         </div>
     )
 }

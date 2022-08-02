@@ -27,7 +27,7 @@ export default function UserLoginPage(){
             AppStore.dispatch( { type: "auth.update", key: "id", value: +(data?.id) } );
             AppStore.dispatch( { type: "auth.update", key: "role", value: "user" } );
 
-            navigate("/", {
+            navigate("/search", {
                 replace: true,
             });
         })

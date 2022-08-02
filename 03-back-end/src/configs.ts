@@ -21,6 +21,7 @@ import EmissionClassRouter from './components/emissionClass/EmissionClassRouter.
 import InteriorMaterialRouter from "./components/interiorMaterial/InteriorMaterialRouter.router";
 import ReplacementRouter from './components/replacement/ReplacementRouter.router';
 import CarBodyRouter from './components/carBody/CarBodyRouter.router';
+import AdRouter from './components/ad/AdRouter.router';
 
 const DevConfig: IConfig = {
     server: {
@@ -70,6 +71,7 @@ const DevConfig: IConfig = {
         new InteriorMaterialRouter(),
         new ReplacementRouter(),
         new CarBodyRouter(),
+        new AdRouter(),
     ],
 
     mail: {

@@ -49,6 +49,27 @@ export default class AdController extends BaseController{
         });
     }
 
+    async getAdByAdId(req: Request, res: Response) {
+        const id: number = +req.params?.id;
+
+        this.services.ad.getById(id, {
+            loadEquipments: true,
+            loadPhotos: true,
+            loadSafety: true,
+            loadVehicleCondition: true,
+        })
+            .then(result => {
+                if (result === null) {
+                    return res.sendStatus(404);
+                }
+
+                res.send(result);
+            })
+            .catch(error => {
+                res.status(500).send(error?.message);
+            });
+    }
+
     async getAllAdByBrandId(req: Request, res: Response) {
         const categoryId: number = +req.params?.cid;
         const brandId: number = +req.params?.bid;

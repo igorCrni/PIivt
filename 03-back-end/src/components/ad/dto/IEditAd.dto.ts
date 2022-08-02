@@ -174,7 +174,7 @@ const EditAdValidator = ajv.compile({
         registrationUntil: {
             type: "string",
             minLength: 0,
-            maxLength: 12,
+            maxLength: 54,
         },
         description: {
             type: "string",

@@ -22,6 +22,7 @@ import IReplacement from '../../models/IReplacement.model';
 import ISeats from '../../models/ISeats.model';
 import ISteeringWheelSide from '../../models/ISteeringWheelSide.model';
 import ITransmission from '../../models/ITransmission.model';
+import './adpreview.sass';
 
 export interface IAdPreviewParams extends Record<string, string | undefined> {
     id: string
@@ -401,253 +402,193 @@ export default function AdPreview() {
 
 
     return (
-        <div className='container'>
-            <div className='card w-100' style={{margin:'0 auto'}}>
-                <div className='card-title text-center'>
-                    <h1>{ad?.title}</h1>
-                </div>
-                <div className='card-body'>
-                    { errorMessage && <p>Error: {errorMessage}</p>}
-                    <div className='card-text'>
-                        <img src={Config.API_PATH + "/assets/" + ad?.photos[0].filePath} 
+        <div className="container">
+            <div className="row justify-content-md-center">
+                <div className="col col-lg-4">
+                <img src={Config.API_PATH + "/assets/" + ad?.photos[0].filePath} 
                             alt={ad?.title}
-                            className="card-img-top"
-                            style={{height:"250px", width:'400px', marginLeft:'30%'}} 
+                            className=""
+                            style={{height:"250px", width:'400px'}} 
                         />
-                        <div>
-                        <p>Owner: {userName} {userSurName}</p>
-                        <a href={"tel:"+ userPhone} className='text-decoration-none'>{userPhone}</a>
-                        </div>
-                        <hr />
-                        
-                        <div className='card w-75 m-auto' style={{borderRadius: '15px', boxShadow:'2.5px 5px 5px #cccc'}}>
-                            <div className='card-body'>
-                                <div style={{marginLeft:'15%'}}>
-                                    <div className='d-table-cell' style={{width:'50%'}}>
-                                        <div className='row'>
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Brand: &nbsp;  </p>
-                                                    <p className='fw-bold'>{brand?.name}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Model: &nbsp; </p>
-                                                    <p className='fw-bold'>{model?.name}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Year: &nbsp; </p>
-                                                    <p className='fw-bold'>{ad?.year}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Mileage: &nbsp;</p>
-                                                    <p className='fw-bold'>{ad?.mileage} km</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Car body: &nbsp;</p>
-                                                    <p className='fw-bold'>{carBody?.name}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Fuel: &nbsp;</p>
-                                                    <p className='fw-bold'>{fuel?.name}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className='d-table-cell'>
-                                        <div className='row'>
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Cub: &nbsp;  </p>
-                                                    <p className='fw-bold'>{ad?.cm3} cm<sup>3</sup></p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Power: &nbsp; </p>
-                                                    <p className='fw-bold'>{ad?.kw}/{ad?.ks} (KW/KS)</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Replacemnet: &nbsp; </p>
-                                                    <p className='fw-bold'>{replacement?.name}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Damage: &nbsp; </p>
-                                                    <p className='fw-bold'>{damage?.name}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr />
-                        <div className='card w-75 m-auto' style={{borderRadius: '15px', boxShadow:'2.5px 5px 5px #cccc'}}>
-                            <div className='card-body'>
-                                <div style={{marginLeft:'15%'}}>
-                                    <div className='d-table-cell' style={{width:'50%'}}>
-                                        <div className='row'>
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Emission class: &nbsp;  </p>
-                                                    <p className='fw-bold'>{ec?.name}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Drive: &nbsp; </p>
-                                                    <p className='fw-bold'>{drive?.name}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Transmission: &nbsp; </p>
-                                                    <p className='fw-bold'>{transmission?.name}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Number of doors: &nbsp;</p>
-                                                    <p className='fw-bold'>{doors?.name}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Number of seats: &nbsp;</p>
-                                                    <p className='fw-bold'>{seats?.name}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Steering wheel side:&nbsp;</p>
-                                                    <p className='fw-bold'>{sws?.name}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className='d-table-cell'>
-                                        <div className='row'>
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Air condition: &nbsp;  </p>
-                                                    <p className='fw-bold'>{airCondition?.name}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Color: &nbsp; </p>
-                                                    <p className='fw-bold'>{ad?.color}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Interior material: &nbsp; </p>
-                                                    <p className='fw-bold'>{im?.name}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Interior color: &nbsp; </p>
-                                                    <p className='fw-bold'>{ad?.interiorColor}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Registration until: &nbsp;</p>
-                                                    <p className='fw-bold'>{ad?.registrationUntil}</p>
-                                                </div>
-                                            </div>
-                                            <hr className='w-75' />
-                                            <div className='row'>
-                                                <div className='col d-inline-flex'>
-                                                    <p>Origin: &nbsp;</p>
-                                                    <p className='fw-bold'>{origin?.name}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr />
-                        <div className='d-inline'>
-                            <div className='card w-75 m-auto' style={{borderRadius: '15px', boxShadow:'2.5px 5px 5px #cccc'}}>
-                                    <div className='card-title text-center mt-4'>
-                                        <h4>Equipments</h4>
-                                    </div>
-                                <div className='card-body'>
-                                    <div className='card-text'>
-                                        <div className='d-inline-flex' style={{width:'75%', marginLeft:'80px'}}>
-                                            {ad?.equipments.map(equipment => (
-                                                <p className='me-3'>{equipment.name}</p>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                            <hr />
-                        <div className='d-inline'>
-                            <div className='card w-75 m-auto' style={{borderRadius: '15px', boxShadow:'2.5px 5px 5px #cccc'}}>
-                                    <div className='card-title text-center mt-4'>
-                                        <h4>Safety</h4>
-                                    </div>
-                                <div className='card-body'>
-                                    <div className='card-text'>
-                                        <div className='d-inline-flex' style={{width:'75%', marginLeft:'80px'}}>
-                                            {ad?.safeties.map(safety => (
-                                                <p className='me-3'>{safety.name}</p>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr />
-                        <div className='card w-75 m-auto' style={{borderRadius: '15px', boxShadow:'2.5px 5px 5px #cccc'}}>
-                                <div className='card-title text-center mt-4'>
-                                    <h4>Description</h4>
-                                </div>
-                            <div className='card-body'>
-                                <div className='card-text'>
-                                    <p style={{minHeight: "4rem",marginLeft:'20px'}}>{ad?.description}</p>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div className="row justify-content-md-center mt-2">
+                <div className="col col-lg-3">
+                    <span className='fw-bold'>Owner:</span>
+                    <span> {userName} {userSurName}</span>
+                    <br />
+                    <span className='fw-bold'>Phone number:</span>
+                    <a href={"tel:"+ userPhone} className='text-decoration-none'> {userPhone}</a>
+                </div>
+            </div>
+            <hr className='mb-4 w-50 m-auto mt-3' />
+            <div className="row justify-content-center">
+                <div className="col col-md-3">
+                    <span className='fw-bold'>Brand:</span>
+                    <span className='ms-2'>{brand?.name}</span>
+                </div>
+                <div className="col col-md-2">
+                    <span className='fw-bold'>Cub:</span>
+                    <span className='ms-2'>{ad?.cm3} cm<sup>3</sup></span>
+                </div>
+            </div>
+            <hr className='adhr' />
+            <div className="row justify-content-center mt-2">
+                <div className="col col-md-3 ">
+                    <span className='fw-bold'>Year:</span>
+                    <span className='ms-2'>{ad?.year}</span>
+                </div>
+                <div className="col col-md-2">
+                    <span className='fw-bold'>Mileage:</span>
+                    <span className='ms-2'>{ad?.mileage} km</span>
+                </div>
+            </div>
+            <hr className='adhr' />
+            <div className="row justify-content-center mt-2">
+                <div className="col col-md-3">
+                    <span className='fw-bold'>Car body:</span>
+                    <span className='ms-2'>{carBody?.name}</span>
+                </div>
+                <div className="col col-md-2 ">
+                    <span className='fw-bold'>Fuel:</span>
+                    <span className='ms-2'>{fuel?.name}</span>
+                </div>
+            </div>
+            <hr className='adhr' />
+            <div className="row justify-content-center mt-2">
+                <div className="col col-md-3">
+                    <span className='fw-bold'>Cub:</span>
+                    <span className='ms-2'>{ad?.cm3} cm<sup>3</sup></span>
+                </div>
+                <div className="col col-md-2 ">
+                    <span className='fw-bold'>Power:</span>
+                    <span className='ms-2'>{ad?.kw}/{ad?.ks} (KW/KS)</span>
+                </div>
+            </div>
+            <hr className='adhr' />
+            <div className="row justify-content-center mt-2">
+                <div className="col col-md-3">
+                    <span className='fw-bold'>Replacemnet:</span>
+                    <span className='ms-2'>{replacement?.name}</span>
+                </div>
+                <div className="col col-md-2 ">
+                    <span className='fw-bold'>Damage:</span>
+                    <span className='ms-2'>{damage?.name}</span>
+                </div>
+            </div>
+
+            <hr className='mb-4 w-50 m-auto mt-3' />
+
+            <div className="row justify-content-center mt-2">
+                <div className="col col-md-3">
+                    <span className='fw-bold'>Emission class:</span>
+                    <span className='ms-2'>{ec?.name}</span>
+                </div>
+                <div className="col col-md-2 ">
+                    <span className='fw-bold'>Drive:</span>
+                    <span className='ms-2'>{drive?.name}</span>
+                </div>
+            </div>
+            <hr className='adhr' />
+            <div className="row justify-content-center mt-2">
+                <div className="col col-md-3">
+                    <span className='fw-bold'>Transmission:</span>
+                    <span className='ms-2'>{transmission?.name}</span>
+                </div>
+                <div className="col col-md-2 ">
+                    <span className='fw-bold'>Number of doors:</span>
+                    <span className='ms-2'>{doors?.name}</span>
+                </div>
+            </div>
+            <hr className='adhr' />
+            <div className="row justify-content-center mt-2">
+                <div className="col col-md-3">
+                    <span className='fw-bold'>Number of seats:</span>
+                    <span className='ms-2'>{seats?.name}</span>
+                </div>
+                <div className="col col-md-2 ">
+                    <span className='fw-bold'>Air condition:</span>
+                    <span className='ms-2'>{airCondition?.name}</span>
+                </div>
+            </div>
+            <hr className='adhr' />
+            <div className="row justify-content-center mt-2">
+                <div className="col col-md-3">
+                    <span className='fw-bold'>Steering wheel side:</span>
+                    <span className='ms-2'>{sws?.name}</span>
+                </div>
+                <div className="col col-md-2 ">
+                    <span className='fw-bold'>Color:</span>
+                    <span className='ms-2'>{ad?.color}</span>
+                </div>
+            </div>
+            <hr className='adhr' />
+            <div className="row justify-content-center mt-2">
+                <div className="col col-md-3">
+                    <span className='fw-bold'>Interior material:</span>
+                    <span className='ms-2'>{im?.name}</span>
+                </div>
+                <div className="col col-md-2 ">
+                    <span className='fw-bold'>Interior color:</span>
+                    <span className='ms-2'>{ad?.interiorColor}</span>
+                </div>
+            </div>
+            <hr className='adhr' />
+            <div className="row justify-content-center mt-2">
+                <div className="col col-md-3">
+                    <span className='fw-bold'>Registration until:</span>
+                    <span className='ms-2'>{ad?.registrationUntil}</span>
+                </div>
+                <div className="col col-md-2 ">
+                    <span className='fw-bold'>Origin:</span>
+                    <span className='ms-2'>{origin?.name}</span>
+                </div>
+            </div>
+
+            <hr className='mb-4 w-50 m-auto mt-3' />
+
+            <div className="row justify-content-center mt-2">
+                <div className="col col-md-3">
+                    <h4 className='text-center h3 mb-4'>Equipments</h4>
+                </div>
+            </div>
+            <div className="row justify-content-center mt-2">
+                <div className="col text-center">
+                    {ad?.equipments.map(equipment => (
+                        <span className='me-3'>{equipment.name}</span>
+                    ))}
+                </div>
+            </div>
+
+            <hr className='mb-4 w-50 m-auto mt-4' />
+
+            <div className="row justify-content-center mt-2">
+                <div className="col col-md-3">
+                    <h4 className='text-center h3 mb-4'>Safety</h4>
+                </div>
+            </div>
+            <div className="row justify-content-center mt-2">
+                <div className="col text-center">
+                    {ad?.safeties.map(safety => (
+                        <span className='me-3'>{safety.name}</span>
+                    ))}
+                </div>
+            </div>
+
+            <hr className='mb-4 w-50 m-auto mt-4' />
+
+            <div className='card w-75 m-auto' style={{borderRadius: '15px', boxShadow:'2.5px 5px 5px #cccc'}}>
+                    <div className='card-title text-center mt-4'>
+                        <h4>Description</h4>
+                    </div>
+                <div className='card-body'>
+                    <div className='card-text'>
+                        <p style={{minHeight: "4rem",marginLeft:'20px'}}>{ad?.description}</p>
                     </div>
                 </div>
             </div>
+
+            <hr className='mb-4 m-auto mt-4' />
         </div>
     );
 }
